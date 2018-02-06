@@ -1,5 +1,7 @@
 package TADashboard_TestCases;
 
+import java.util.concurrent.TimeUnit;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import Constant.Constant;
@@ -12,7 +14,7 @@ public class TC_Login extends TestBase{
   
 
   @Test
-  public void DA_LOGIN_TR001() {
+  public void TC001_DA_LOGIN() {
 	  //test
 	  System.out.println("DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials.");	  
 	  //1. Navigate to TA Dashboard login page
@@ -30,7 +32,18 @@ public class TC_Login extends TestBase{
   }
   
   @Test
-  public void DA_LOGIN_TR002() {
+  public void TC002_DA_LOGIN() {
+	  System.out.println("DA_LOGIN_TC002 - Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials.");
+	  LoginPage loginpage = new LoginPage (driver);
+	  loginpage.Open();
+	  loginpage.Login("abc","123",Constant.DefaultRepo);
+	  driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS); 
+	  String ActualMessage = loginpage.GetAlertMessage();
+	  String ExpectedMessage = "Username or password is invalid";
+	  System.out.print(ExpectedMessage); 
+	  System.out.print (ActualMessage);
+	 
+	  Assert.assertEquals(ActualMessage, ExpectedMessage);
   }
   
   
