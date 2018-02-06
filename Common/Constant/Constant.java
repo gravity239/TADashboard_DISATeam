@@ -2,7 +2,7 @@ package Constant;
 
 public class Constant 
 	{
-		public static final String HomePageURL = "http://lgvn14954:54000";
+		public static final String HomePageURL = "http://localhost:54000/TADashboard/login.jsp";
 		public static final String Username = "administrator";
 		public static final String Password = "";
 		public static final String OtherUsername = "test";
