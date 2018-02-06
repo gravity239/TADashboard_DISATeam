@@ -30,7 +30,7 @@ private WebDriver _driverLoginPage;
 		return MyFindElement(_cmbRepo, Constant.TimeOut);
 	}
 	
-	protected LoginPage(WebDriver driver) 
+	public LoginPage(WebDriver driver) 
     {
     	super(driver);
     	this._driverLoginPage = driver;
