@@ -4,7 +4,10 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import Constant.Constant;
 public class LoginPage extends GeneralPage {
 private WebDriver _driverLoginPage;
@@ -51,12 +54,14 @@ private WebDriver _driverLoginPage;
         getTxtUsername().sendKeys(username);
         getTxtPassword().sendKeys(password);
         getBtnLogin().click();
-        return new MainPage(_driverGeneralPage);
+        return new MainPage(_driverLoginPage);
     }
     
     // Get the message of the alert dialog.
     public String GetAlertMessage()
     {
+    	WebDriverWait wait = new WebDriverWait(_driverLoginPage, 5);
+    	wait.until(ExpectedConditions.alertIsPresent());
         Alert alert = _driverLoginPage.switchTo().alert();
         return alert.getText();
     }

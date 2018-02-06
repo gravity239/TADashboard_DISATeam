@@ -124,16 +124,6 @@ public class MainPage extends GeneralPage {
 				ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format(_lnkMainMenu, repositoryName))));
 	}
 
-	// Determines if alert dialog displayed
-	public boolean isAlertPresent() {
-		try {
-			_driverMainPage.switchTo().alert();
-			return true;
-		} catch (NoAlertPresentException Ex) {
-			return false;
-		}
-	}
-
 	// Get the name of the repository.
 	public String GetRepositoryName() {
 		return getLblRepositoryName().getText();

@@ -3,6 +3,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +20,16 @@ public class GeneralPage {
 		this._driverGeneralPage = driver;
 		_driverGeneralPage.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
+	
+	public boolean isAlertPresent() {
+		try {
+			_driverGeneralPage.switchTo().alert();
+			return true;
+		} catch (NoAlertPresentException Ex) {
+			return false;
+		}
+	}
+	
 	public void acceptAlertIfAvailable(long timeout) {
 		long waitForAlert = System.currentTimeMillis() + timeout;
 		boolean boolFound = false;
