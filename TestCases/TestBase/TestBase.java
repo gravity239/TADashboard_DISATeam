@@ -11,38 +11,33 @@ import org.testng.asserts.SoftAssert;
 public class TestBase {
 
 	String driverPath = "./Executables/chromedriver.exe";
-    public WebDriver driver;	 
-    SoftAssert softAssert = new SoftAssert();
-    
-    @BeforeMethod
-    public void beforeMethod_initialize() 
-    {
-    	if(driver.toString().contains("null"))
-    	{
-    		 System.setProperty("webdriver.chrome.driver", driverPath);
-    	     driver = new ChromeDriver();
-    	     driver.manage().window().maximize();
-    	}
-    }
-    
-    @AfterMethod 
-    public void afterMethod_cleanup()
-     {    	
-    	driver.close();    	
-	 }
-    
-	@BeforeTest
-    public void beforeTest_initialize() 
-    {
-        System.setProperty("webdriver.chrome.driver", driverPath);
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-    }
-	
-	 @AfterTest 
-	 public void afterTest_cleanup()
-	 {    	
-	    driver.quit();    	
+	public WebDriver driver;
+	SoftAssert softAssert = new SoftAssert();
+
+	@BeforeMethod
+	public void beforeMethod_initialize() {
+		if (driver.toString().contains("null")) {
+			System.setProperty("webdriver.chrome.driver", driverPath);
+			driver = new ChromeDriver();
+			driver.manage().window().maximize();
+		}
 	}
-		
+
+	@AfterMethod
+	public void afterMethod_cleanup() {
+		driver.quit();
+	}
+
+	@BeforeTest
+	public void beforeTest_initialize() {
+		System.setProperty("webdriver.chrome.driver", driverPath);
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+	}
+
+	@AfterTest
+	public void afterTest_cleanup() {
+		driver.quit();
+	}
+
 }
