@@ -9,8 +9,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 public class Utilities {
-	public static String getUniqueString() {
-		return new SimpleDateFormat("HH.mm.ss").format(new Date());
+	public static String uniquePageName(String pageName) {
+		return pageName.concat(new SimpleDateFormat("HH.mm.ss").format(new Date()));
 	}
 
 	// Move mouse to a element
