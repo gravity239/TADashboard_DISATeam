@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.UnhandledAlertException;
@@ -31,6 +32,22 @@ public class GeneralPage {
 			return false;
 		}
 	}
+	
+	public static void waitForAlertPresent(WebDriverWait wait, WebDriver driver)
+	{
+		wait = new WebDriverWait(driver, Constant.TimeOut);
+		wait.until(ExpectedConditions.alertIsPresent());
+	}
+
+	public static void waitForElementToBeCliable(WebDriverWait wait, WebDriver driver, WebElement ele){
+		wait = new WebDriverWait(driver, Constant.TimeOut);
+		wait.until(ExpectedConditions.elementToBeClickable(ele));
+	}
+	
+	public static void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, WebElement ele){
+		wait = new WebDriverWait(driver, Constant.TimeOut);
+		wait.until(ExpectedConditions.visibilityOf(ele));
+	}
 
 	public void acceptAlertIfAvailable(long timeout) {
 		long waitForAlert = System.currentTimeMillis() + timeout;
@@ -57,6 +74,9 @@ public class GeneralPage {
 				wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 				wait.until(ExpectedConditions.elementToBeClickable(by));
 				ele = _driverGeneralPage.findElement(by);
+				if (_driverGeneralPage instanceof JavascriptExecutor) {
+			        ((JavascriptExecutor)_driverGeneralPage).executeScript("arguments[0].style.border='3px solid red'", ele);
+			    }
 				break;
 			} catch (StaleElementReferenceException e) {
 				timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);

@@ -12,6 +12,7 @@ import Constant.Constant;
 
 public class LoginPage extends GeneralPage {
 	private WebDriver _driverLoginPage;
+	private WebDriverWait _driverWaitLoginPage;
 
 	private static final By _txtUsername = By.xpath("//input[@id='username']");
 	private static final By _txtPassword = By.xpath("//input[@id='password']");
@@ -56,8 +57,7 @@ public class LoginPage extends GeneralPage {
 
 	// Get the message of the alert dialog.
 	public String getAlertMessage() {
-		WebDriverWait wait = new WebDriverWait(_driverLoginPage, 5);
-		wait.until(ExpectedConditions.alertIsPresent());
+		GeneralPage.waitForAlertPresent(_driverWaitLoginPage, _driverLoginPage);
 		Alert alert = _driverLoginPage.switchTo().alert();
 		return alert.getText();
 	}

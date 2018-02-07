@@ -83,7 +83,8 @@ public class TC_Login extends TestBase {
 		Assert.assertEquals(actualResult, true, "Dashboard Mainpage is not displayed!");
 
 	}
-
+	
+	@Test
 	public void TC003_DA_LOGIN() {
 		System.out.println(
 				"TC003_DA_LOGIN - Verify that user fails to log in specific repository successfully via Dashboard login page with correct username and incorrect password.");
