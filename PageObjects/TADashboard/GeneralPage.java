@@ -1,4 +1,5 @@
 package TADashboard;
+
 import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 import org.openqa.selenium.Alert;
@@ -16,11 +17,12 @@ import Constant.Constant;
 
 public class GeneralPage {
 	protected WebDriver _driverGeneralPage;
+
 	public GeneralPage(WebDriver driver) {
 		this._driverGeneralPage = driver;
 		_driverGeneralPage.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
-	
+
 	public boolean isAlertPresent() {
 		try {
 			_driverGeneralPage.switchTo().alert();
@@ -29,7 +31,7 @@ public class GeneralPage {
 			return false;
 		}
 	}
-	
+
 	public void acceptAlertIfAvailable(long timeout) {
 		long waitForAlert = System.currentTimeMillis() + timeout;
 		boolean boolFound = false;
@@ -44,57 +46,46 @@ public class GeneralPage {
 			}
 		} while ((System.currentTimeMillis() < waitForAlert) && (!boolFound));
 	}
-	
-    // Override FindElement
-    public WebElement MyFindElement(By by, long timeout)
-    {
-        WebElement Ele = null;
-        Stopwatch stopWatch = Stopwatch.createStarted();
-        while (timeout >= 0)
-        {
-            try
-            {
-                WebDriverWait wait = new WebDriverWait(_driverGeneralPage, Constant.TimeOut);
-                wait.until(ExpectedConditions.visibilityOfElementLocated(by));
-                wait.until(ExpectedConditions.elementToBeClickable(by));
-                Ele = _driverGeneralPage.findElement(by);
-                break;
-            }
-            catch(StaleElementReferenceException e)
-            {
-                timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
-                MyFindElement(by, timeout);
-                stopWatch.stop();
-            }
-            catch(NullPointerException e)
-            {
-            	timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
-                MyFindElement(by, timeout);
-                stopWatch.stop();
-            }
-            catch(WebDriverException e)
-            {
-            	timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
-                MyFindElement(by, timeout);
-                stopWatch.stop();
-            }
-            catch(IllegalArgumentException e)
-            {
-            	timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
-                MyFindElement(by, timeout);
-                stopWatch.stop();
-            }
-        }
-        try {
+
+	// Override FindElement
+	public WebElement myFindElement(By by, long timeout) {
+		WebElement ele = null;
+		Stopwatch stopWatch = Stopwatch.createStarted();
+		while (timeout >= 0) {
+			try {
+				WebDriverWait wait = new WebDriverWait(_driverGeneralPage, Constant.ShortTime);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+				wait.until(ExpectedConditions.elementToBeClickable(by));
+				ele = _driverGeneralPage.findElement(by);
+				break;
+			} catch (StaleElementReferenceException e) {
+				timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
+				myFindElement(by, timeout);
+				stopWatch.stop();
+			} catch (NullPointerException e) {
+				timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
+				myFindElement(by, timeout);
+				stopWatch.stop();
+			} catch (WebDriverException e) {
+				timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
+				myFindElement(by, timeout);
+				stopWatch.stop();
+			} catch (IllegalArgumentException e) {
+				timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
+				myFindElement(by, timeout);
+				stopWatch.stop();
+			}
+		}
+		try {
 			stopWatch.stop();
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
-	      return Ele;
-    }
+		return ele;
+	}
 
-	public boolean DoesElementExist(By locatorKey) {
-		WebDriverWait wait = new WebDriverWait(_driverGeneralPage, Constant.TimeOut);
+	public boolean isElementExisted(By locatorKey) {
+		WebDriverWait wait = new WebDriverWait(_driverGeneralPage, Constant.ShortTime);
 		try {
 			wait.until(ExpectedConditions.visibilityOfElementLocated(locatorKey));
 			return true;
