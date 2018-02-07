@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import Constant.Constant;
 import Common.Utilities;
@@ -33,51 +34,51 @@ public class MainPage extends GeneralPage {
 	private static final By _dlgPopupHeader = By.xpath("//div[@id='div_popup']//td[@class='ptc']/h2");
 	
 	public WebElement getLnkAccount() {
-		return MyFindElement(_lnkAccount, Constant.TimeOut);
+		return myFindElement(_lnkAccount, Constant.TimeOut);
 	}
 	
 	public WebElement getLnkLogout() {
-		return MyFindElement(_lnkLogout, Constant.TimeOut);
+		return myFindElement(_lnkLogout, Constant.TimeOut);
 	}
 	
 	public WebElement getLblRepositoryName() {
-		return MyFindElement(_lblRepositoryName, Constant.TimeOut);
+		return myFindElement(_lblRepositoryName, Constant.TimeOut);
 	}
 	
 	public WebElement getTabSetting() {
-		return MyFindElement(_tabSetting, Constant.TimeOut);
+		return myFindElement(_tabSetting, Constant.TimeOut);
 	}
 	
 	public WebElement getChbPublic() {
-		return MyFindElement(_chbPublic, Constant.TimeOut);
+		return myFindElement(_chbPublic, Constant.TimeOut);
 	}
 	
 	public WebElement getTxtNewPageName() {
-		return MyFindElement(_txtNewPageName, Constant.TimeOut);
+		return myFindElement(_txtNewPageName, Constant.TimeOut);
 	}
 	
-	public WebElement getCmbParentPage() {
-		return MyFindElement(_cmbParentPage, Constant.TimeOut);
+	public Select getCmbParentPage() {
+		return new Select(myFindElement(_cmbParentPage, Constant.TimeOut));
 	}
 	
-	public WebElement getCmbPageDisplayAfter() {
-		return MyFindElement(_cmbPageDisplayAfter, Constant.TimeOut);
+	public Select getCmbPageDisplayAfter() {
+		return new Select(myFindElement(_cmbPageDisplayAfter, Constant.TimeOut));
 	}
 	
-	public WebElement getCbmNumberOfColumns() {
-		return MyFindElement(_cbmNumberOfColumns, Constant.TimeOut);
+	public Select getCbmNumberOfColumns() {
+		return new Select(myFindElement(_cbmNumberOfColumns, Constant.TimeOut));
 	}
 	
 	public WebElement getBtnPageOK() {
-		return MyFindElement(_btnPageOK, Constant.TimeOut);
+		return myFindElement(_btnPageOK, Constant.TimeOut);
 	}
 	
 	public WebElement getBtnPageCancel() {
-		return MyFindElement(_btnPageCancel, Constant.TimeOut);
+		return myFindElement(_btnPageCancel, Constant.TimeOut);
 	}
 	
 	public WebElement getDlgPopupHeader() {
-		return MyFindElement(_dlgPopupHeader, Constant.TimeOut);
+		return myFindElement(_dlgPopupHeader, Constant.TimeOut);
 	}
 
 	public MainPage(WebDriver driver) {
@@ -86,13 +87,13 @@ public class MainPage extends GeneralPage {
 	}
 
 	// Determine if dashboard mainpage displayed
-	public boolean IsDashboardMainpageDisplayed() {
+	public boolean isDashboardDisplayed() {
 		boolean foundDashboardMainpage = getLnkAccount().isDisplayed();
 		return foundDashboardMainpage;
 	}
 
 	// Log out from TA Dashboard page
-	public LoginPage Logout() {
+	public LoginPage logout() {
 		WebDriverWait wait = new WebDriverWait(_driverMainPage, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(getLnkAccount()));
 		Actions builder = new Actions(_driverMainPage);
@@ -103,75 +104,66 @@ public class MainPage extends GeneralPage {
 	}
 
 	// Select the menu item
-	public void SelectMenuItem(String mainMenu, String subMenu) {
+	public void selectMenuItem(String mainMenu, String subMenu) {
 
-		WebElement LnkMainMenu = MyFindElement(By.xpath(String.format(_lnkMainMenu, mainMenu)), Constant.TimeOut);
+		WebElement lnkMainMenu = myFindElement(By.xpath(String.format(_lnkMainMenu, mainMenu)), Constant.TimeOut);
 		// Actions builder = new Actions(_driverMainPage);
 		// Action mouseOverLnkMainMenu = builder
 		// .moveToElement(LnkMainMenu)
 		// .build();
 		// mouseOverLnkMainMenu.perform();
-		Utilities.MouseTo(LnkMainMenu, _driverMainPage);
-		WebElement LnkSubMenu = MyFindElement(By.xpath(String.format(_lnkSubMenu, mainMenu, subMenu)), Constant.TimeOut);
-		LnkSubMenu.click();
+		Utilities.mouseTo(lnkMainMenu, _driverMainPage);
+		WebElement lnkSubMenu = myFindElement(By.xpath(String.format(_lnkSubMenu, mainMenu, subMenu)), Constant.TimeOut);
+		lnkSubMenu.click();
 	}
 
 	// Switch the repository which the user wants to work on
 	public void ChooseRepository(String repositoryName) {
-		SelectMenuItem("Repository", repositoryName);
+		selectMenuItem("Repository", repositoryName);
 		WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
 		wait.until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format(_lnkMainMenu, repositoryName))));
 	}
 
-	// Determines if alert dialog displayed
-	public boolean isAlertPresent() {
-		try {
-			_driverMainPage.switchTo().alert();
-			return true;
-		} catch (NoAlertPresentException Ex) {
-			return false;
-		}
-	}
-
 	// Get the name of the repository.
-	public String GetRepositoryName() {
+	public String getRepositoryName() {
 		return getLblRepositoryName().getText();
 	}
 
 	// Select settings of general setting menu.
-	public MainPage SelectGeneralSetting(String item) {
-		Utilities.MouseTo(getTabSetting(), _driverMainPage);
+	public MainPage selectGeneralSetting(String item) {
+		Utilities.mouseTo(getTabSetting(), _driverMainPage);
 		WebElement settingItem = _driverMainPage.findElement(By.xpath(String.format(_lnkSettingItem, item)));
 		settingItem.click();
 		return this;
 	}
 
 	// Determines if dashboard is locked by dialog
-	public boolean IsDashboardLockedByDialog() {
+	public boolean isDashboardLockedByDialog() {
 		return getTabSetting().isEnabled();
 	}
 
 	public MainPage AddPage(String pageName, String parentPage, int numberOfColumn, String displayAferPage,
 			boolean publicCheckBox) {
-		this.SelectGeneralSetting("Add Page");
+		this.selectGeneralSetting("Add Page");
 		getTxtNewPageName().sendKeys(pageName);
 
 		if (parentPage != "") 
 		{	
-			Utilities.SelectItem(getCmbParentPage(), parentPage, "Text");
+			getCmbParentPage().selectByVisibleText(parentPage);
 		}
 
 		if (numberOfColumn != 0) {
-			Utilities.SelectItem(getCbmNumberOfColumns(), String.valueOf(numberOfColumn), "Index");
+			
+			getCbmNumberOfColumns().selectByIndex(numberOfColumn);
 		}
 
 		if (displayAferPage != "") {
-			Utilities.SelectItem(getCmbPageDisplayAfter(), displayAferPage, "Text");
+			getCmbPageDisplayAfter().selectByVisibleText(displayAferPage);
 		}
 
 		if (publicCheckBox != false) {
-			Utilities.Check(getChbPublic());
+			Utilities.check(getChbPublic());
 		}
 
 		getBtnPageOK().click();
@@ -179,8 +171,8 @@ public class MainPage extends GeneralPage {
 		if (parentPage != "")
 		{
 			By lnkParentPage = By.xpath(String.format(_lnkParentPage, pageName).replace(" ", "\u00A0"));
-			WebElement LnkParentPage = MyFindElement(lnkParentPage, Constant.TimeOut);
-			Utilities.MouseTo(LnkParentPage, _driverMainPage);
+			WebElement LnkParentPage = myFindElement(lnkParentPage, Constant.TimeOut);
+			Utilities.mouseTo(LnkParentPage, _driverMainPage);
 		}
 			
 		WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
@@ -195,7 +187,7 @@ public class MainPage extends GeneralPage {
 		 boolean isPageNextToPage = false;
 		By current = By.xpath("//a[.='" + nextPage.replace(" ", "\u00A0") + "']/parent::*/preceding-sibling::*/a[.='"
 				+ currentPage.replace(" ", "\u00A0") + "']");
-		if (MyFindElement(current, Constant.TimeOut).getText().equals(currentPage)) 
+		if (myFindElement(current, Constant.TimeOut).getText().equals(currentPage)) 
 		{
 			isPageNextToPage =  true;			
 		}
@@ -209,7 +201,7 @@ public class MainPage extends GeneralPage {
         if (pages.length == 1)
         {
             By page = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
-            WebElement LnkPage = MyFindElement(page, Constant.TimeOut);
+            WebElement LnkPage = myFindElement(page, Constant.TimeOut);
             LnkPage.click();
         }
         else
@@ -218,11 +210,11 @@ public class MainPage extends GeneralPage {
             while (pageIndex + 1 < pages.length)
             {
                 By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                WebElement LnkParent = MyFindElement(page, Constant.TimeOut);
-                Utilities.MouseTo(LnkParent, _driverMainPage);  
+                WebElement LnkParent = myFindElement(page, Constant.TimeOut);
+                Utilities.mouseTo(LnkParent, _driverMainPage);  
                 pageIndex = pageIndex + 1;
                 page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                WebElement LnkPage = MyFindElement(page, Constant.TimeOut);
+                WebElement LnkPage = myFindElement(page, Constant.TimeOut);
                 if (pageIndex + 1 == pages.length)
                 {
                     LnkPage.click();
@@ -236,7 +228,7 @@ public class MainPage extends GeneralPage {
     public MainPage DeletePage(String pageLink)
     {
         GotoPage(pageLink);
-        this.SelectGeneralSetting("Delete");
+        this.selectGeneralSetting("Delete");
         acceptAlertIfAvailable(Constant.TimeOut);
         String[] pages = pageLink.split("->");
          if (pages.length == 1)
@@ -251,8 +243,8 @@ public class MainPage extends GeneralPage {
             while (pageIndex + 1 < pages.length)
             {
             	By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                WebElement LnkParent = MyFindElement(page, Constant.TimeOut);
-                Utilities.MouseTo(LnkParent, _driverMainPage);
+                WebElement LnkParent = myFindElement(page, Constant.TimeOut);
+                Utilities.mouseTo(LnkParent, _driverMainPage);
                 pageIndex = pageIndex + 1;
                 if (pageIndex + 1 == pages.length)
                 {
@@ -266,32 +258,29 @@ public class MainPage extends GeneralPage {
     }
     
     /// Determine if a page exists
-    public boolean DoesPageExist(String pageLink)
+    public boolean isPageExisted(String pageLink)
     {
         WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format(_lnkPage, "Overview"))));
-        boolean doesPageExist = false;
+        boolean isPageExisted = false;
         String[] pages = pageLink.split("->");
         if (pages.length == 1)
         {
-            By lnkPage = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
-            doesPageExist = this.DoesElementExist(lnkPage);
-        }
-        else
-        {
-            int pageIndex = 0;
-            while (pageIndex + 1 < pages.length)
-            {
+			By lnkPage = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
+			isPageExisted = this.isElementExisted(lnkPage);
+		} else {
+			int pageIndex = 0;
+			while (pageIndex + 1 < pages.length) {
                 By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                WebElement LnkParent = MyFindElement(page, Constant.TimeOut);
-                Utilities.MouseTo(LnkParent,_driverMainPage);
+                WebElement LnkParent = myFindElement(page, Constant.TimeOut);
+                Utilities.mouseTo(LnkParent,_driverMainPage);
                 pageIndex = pageIndex + 1;
                 By lnkPage = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
                 {
-                doesPageExist = this.DoesElementExist(lnkPage);
+                isPageExisted = this.isElementExisted(lnkPage);
                 }
             }
         }
-        return doesPageExist;
+        return isPageExisted;
     }
 }
