@@ -1,6 +1,10 @@
 package TADashboard_TestCases;
 
+
+import java.util.concurrent.TimeUnit;
+import DataObject.DataObject;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import Constant.Constant;
 import TADashboard.LoginPage;
@@ -134,4 +138,30 @@ public class TC_Login extends TestBase {
 		boolean actualResult = mainPage.isDashboardLockedByDialog();
 		Assert.assertEquals(true, actualResult, "Dashboard is not locked by dialog!");
 	}
+	
+	@Test (dataProvider="LoginCredentials")
+	public void temp(String userName, String passWord) {
+		
+		//LoginPage loginPage = new LoginPage(driver);
+		//loginPage.open();
+		MainPage homePage = (new LoginPage(driver)).open().login(userName, passWord, Constant.DefaultRepo);
+
+		// VP: Verify that TA Dashboard Mainpage appear
+		boolean actualResult = homePage.isDashboardDisplayed();
+		Assert.assertEquals(actualResult, true, "Dashboard Mainpage is not displayed!");
+		homePage.logout();
+	}
+	
+	@DataProvider(name="LoginCredentials")
+    public Object[][] getDataFromDataprovider(){
+    return new Object[][] 
+    	{
+            { "administrator", "" },
+            { "test1", "test@#" },
+            { "test@!", "test" }
+        };
+
+    }
+
+	
 }
