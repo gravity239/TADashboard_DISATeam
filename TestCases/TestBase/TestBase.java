@@ -13,6 +13,7 @@ public class TestBase {
 	String driverPath = "./Executables/chromedriver.exe";
 <<<<<<< HEAD
     public WebDriver driver;	 
+<<<<<<< HEAD
     SoftAssert softAssert = new SoftAssert();
     
     @BeforeMethod
@@ -30,6 +31,25 @@ public class TestBase {
     public void afterMethod_cleanup()
      {    	
     	driver.quit();    	
+=======
+    protected SoftAssert softAssert = new SoftAssert();
+    
+    @BeforeMethod
+    public void beforeMethod_initialize() 
+    {
+    	if(driver.toString().contains("null"))
+    	{
+    		 System.setProperty("webdriver.chrome.driver", driverPath);
+    	     driver = new ChromeDriver();
+    	     driver.manage().window().maximize();
+    	}
+    }
+    
+    @AfterMethod 
+    public void afterMethod_cleanup()
+     {    	
+    	driver.close();    	
+>>>>>>> branch 'master' of https://github.com/gravity239/TADashboard_DISATeam.git
 	 }
     
 	@BeforeTest
