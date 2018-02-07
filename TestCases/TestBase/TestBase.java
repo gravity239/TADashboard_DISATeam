@@ -28,7 +28,7 @@ public class TestBase {
     @AfterMethod 
     public void afterMethod_cleanup()
      {    	
-    	driver.close();    	
+    	driver.quit();    	
 	 }
     
 	@BeforeTest
