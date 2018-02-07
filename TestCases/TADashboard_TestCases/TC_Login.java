@@ -45,9 +45,9 @@ public class TC_Login extends TestBase{
 	  loginPage.Login("aa","bb",Constant.DefaultRepo);
 	  
 	  //VP: Verify that Dashboard Error message "Username or password is invalid" appears
-	  String expectedMessage = loginPage.GetAlertMessage();
-      String actualMessage = "Username or password is invalid";
-      Assert.assertEquals(expectedMessage, actualMessage,"\nActual: " + actualMessage + "\nExpected: " + expectedMessage);
+	  String actualMessage = loginPage.GetAlertMessage();
+      String expectedMessage = "Username or password is invalid";
+      Assert.assertEquals(actualMessage, expectedMessage, "\nActual: " + actualMessage + "\nExpected: " + expectedMessage);
   }
   
   @Test
