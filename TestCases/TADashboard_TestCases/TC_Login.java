@@ -51,7 +51,6 @@ public class TC_Login extends TestBase{
   }
   
   @Test
-<<<<<<< HEAD
   public void TC011_DA_LOGIN() {
 	  
 	  System.out.println("DA_LOGIN_TC011 - Verify password with special characters is working correctly");	  
@@ -87,10 +86,6 @@ public class TC_Login extends TestBase{
 	  
   }
   
-  
-  
-  
-=======
   public void TC003_DA_LOGIN() 
   {
 	  System.out.println("TC003_DA_LOGIN - Verify that user fails to log in specific repository successfully via Dashboard login page with correct username and incorrect password.");
@@ -124,7 +119,8 @@ public class TC_Login extends TestBase{
       String actualMessage = "Please enter username";
       Assert.assertEquals(expectedMessage, actualMessage,"\nActual: " + actualMessage + "\nExpected: " + expectedMessage);
   }
-	@Test
+	
+  @Test
 	public void TC014_DA_LOGIN() 
 	{
 		  System.out.println("TC014_DA_LOGIN - Verify when \"New Page\" control/form is brought up to focus all other control within Dashboard page are locked and disabled ");
@@ -142,7 +138,6 @@ public class TC_Login extends TestBase{
 		  boolean actualResult = mainPage.IsDashboardLockedByDialog();
 		  Assert.assertEquals(true, actualResult, "Dashboard is not locked by dialog!");
 	}
->>>>>>> branch 'Long' of https://github.com/gravity239/TADashboard_DISATeam.git
 }
 
 
