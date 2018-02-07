@@ -52,6 +52,50 @@ public class TC_Login extends TestBase {
 	}
 
 	@Test
+	public void TC009_DA_LOGIN() {
+
+		System.out.println("Verify Password input is case sensitive");
+		// 1. Navigate to TA Dashboard login page
+		// 2. Login with the "test / test" account
+		// 3. Logout TA Dashboard
+		// 4. Login with the above account but enter password is lower case
+		LoginPage loginPage = new LoginPage(driver);
+		loginPage.open();
+		MainPage homePage = loginPage.login(Constant.OtherUsername, Constant.OtherPassword, Constant.DefaultRepo);
+
+		// VP: Verify that TA Dashboard Mainpage appear
+		Assert.assertEquals(homePage.isDashboardDisplayed(), true, "Dashboard Mainpage is not displayed!");
+		homePage.logout();
+		
+		loginPage.login(Constant.OtherUsername, Constant.OtherPassword.toLowerCase(), Constant.DefaultRepo);
+		Assert.assertEquals(loginPage.getAlertMessage(),"Username or password is invalid");
+
+		
+	}
+	
+	@Test
+	public void TC010_DA_LOGIN() {
+
+		System.out.println("Verify Username is not case sensitive");
+		// 1. Navigate to TA Dashboard login page
+		// 2. Login with the "TEST / TEST" account
+		// 3. Logout TA Dashboard
+		// 4. Login with the above account but enter password is lower case
+		LoginPage loginPage = new LoginPage(driver);
+		loginPage.open();
+		MainPage homePage = loginPage.login(Constant.OtherUsername.toUpperCase(), Constant.OtherPassword, Constant.DefaultRepo);
+
+		// VP: Verify that TA Dashboard Mainpage appear
+		Assert.assertEquals(homePage.isDashboardDisplayed(), true, "Dashboard Mainpage is not displayed!");
+		homePage.logout();
+		
+		loginPage.login(Constant.OtherUsername.toLowerCase(), Constant.OtherPassword, Constant.DefaultRepo);
+		Assert.assertEquals(homePage.isDashboardDisplayed(), true, "Dashboard Mainpage is not displayed!");
+
+		
+	}
+	
+	@Test
 	public void TC011_DA_LOGIN() {
 
 		System.out.println("DA_LOGIN_TC011 - Verify password with special characters is working correctly");
@@ -137,6 +181,8 @@ public class TC_Login extends TestBase {
 		boolean actualResult = mainPage.isDashboardLockedByDialog();
 		Assert.assertEquals(true, actualResult, "Dashboard is not locked by dialog!");
 	}
+	
+	
 	
 	@Test (dataProvider="LoginCredentials")
 	public void temp(String userName, String passWord) {

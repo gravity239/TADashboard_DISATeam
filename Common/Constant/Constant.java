@@ -7,7 +7,7 @@ public class Constant
 		public static final String Password = "";
 		public static final String OtherUsername = "test";
 		public static final String OtherUsername1 = "test1";
-		public static final String OtherPassword = "test";
+		public static final String OtherPassword = "TEST";
 		public static final String SpecialUsername = "test@!";
 		public static final String SpecialPassword = "test@#";
 		public static final String DefaultRepo = "SampleRepository";
