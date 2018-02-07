@@ -12,7 +12,7 @@ public class TestBase {
 
 	String driverPath = "./Executables/chromedriver.exe";
     public WebDriver driver;	 
-    SoftAssert softAssert = new SoftAssert();
+    protected SoftAssert softAssert = new SoftAssert();
     
     @BeforeMethod
     public void beforeMethod_initialize() 
