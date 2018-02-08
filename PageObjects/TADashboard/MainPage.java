@@ -125,14 +125,6 @@ public class MainPage extends GeneralPage {
 		return getLblRepositoryName().getText();
 	}
 
-	// Select settings of general setting menu.
-	public MainPage selectGeneralSetting(String item) {
-		this.mouseTo(getTabSetting(), _driverMainPage);
-		WebElement settingItem = myFindElement(By.xpath(String.format(_lnkSettingItem, item)), Constant.TimeOut);
-		settingItem.click();
-		return this;
-	}
-
 	// Determines if dashboard is locked by dialog
 	public boolean isDashboardLockedByDialog() {
 		return getTabSetting().isEnabled();
@@ -270,10 +262,16 @@ public class MainPage extends GeneralPage {
 		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, lnkPage, Constant.TimeOut);
 	}
 
+	// Select settings of general setting menu.
+	public void selectGeneralSetting(String item) {
+		this.mouseTo(getTabSetting(), _driverMainPage);
+		WebElement settingItem = myFindElement(By.xpath(String.format(_lnkSettingItem, item)), Constant.TimeOut);
+		settingItem.click();
+	}
+
 	// Go to Data Profile Page
 	public DataProfilesPage goToDataProfilesPage() {
 		selectMenuItem("Administer", "Data Profiles");
 		return new DataProfilesPage(_driverMainPage);
 	}
 }
-

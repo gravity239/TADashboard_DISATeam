@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import Constant.Constant;
 
-public class PanelPage extends GeneralPage {
+public class PanelPage extends MainPage {
 	private WebDriver _driverPanelPage;
 	private	WebDriverWait _driveWaitPanelPage;
 	private static final By _tabDisplaySetting = By.xpath("//a[@href='#tabs-displaySettings']");

@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import Constant.Constant;
 
-public class LoginPage extends GeneralPage {
+public class LoginPage extends MainPage {
 	private WebDriver _driverLoginPage;
 	private WebDriverWait _driverWaitLoginPage;
 

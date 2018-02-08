@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import Constant.Constant;
 
 
-public class DataProfilesPage extends GeneralPage{
+public class DataProfilesPage extends MainPage{
 	
 	private WebDriver _driverDPPage;
 	private WebDriverWait _driverWaitMainPage;
