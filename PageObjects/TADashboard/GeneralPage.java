@@ -87,7 +87,7 @@ public class GeneralPage {
 
 	public void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, By locator, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 	}
 
 	public void acceptAlertIfAvailable(long timeout) {
