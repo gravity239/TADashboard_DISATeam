@@ -34,4 +34,18 @@ public class TC_MainPage extends TestBase {
 		mainPage.deletePage(pageName);
 		softAssert.assertAll();
 	}
+  	
+	@Test
+	public void TC017_DA_MP()
+	{
+		System.out.println("Verify non \"Public\" pages can only be accessed and visible to their creators with condition that all parent pages above it are \"Public\"");
+		String pageName = Utilities.uniquePageName("Page");
+		LoginPage loginPage = new LoginPage(driver);
+		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
+		mainPage.addPage(pageName, "", 0, "", false);
+		mainPage.isPageExisted(pageName);
+		
+	
+	}
+	
 }
