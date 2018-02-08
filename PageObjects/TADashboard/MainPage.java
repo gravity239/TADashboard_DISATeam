@@ -309,20 +309,15 @@ public class MainPage extends GeneralPage {
 
 		boolean isPageExisted = false;
 		String[] pages = pageLink.split("->");
-		if (pages.length == 1) {
-			By lnkPage = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
-			isPageExisted = this.isElementExisted(lnkPage);
-		} else {
-			int pageIndex = 0;
-			while (pageIndex + 1 < pages.length) {
-				By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-				WebElement LnkParent = myFindElement(page, Constant.TimeOut);
-				this.mouseTo(LnkParent, _driverMainPage);
-				pageIndex = pageIndex + 1;
-				By lnkPage = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-				{
-					isPageExisted = this.isElementExisted(lnkPage);
-				}
+		int pageIndex = 0;
+		while (pageIndex + 1 < pages.length) {
+			By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
+			WebElement LnkParent = myFindElement(page, Constant.TimeOut);
+			this.mouseTo(LnkParent, _driverMainPage);
+			pageIndex = pageIndex + 1;
+			By lnkPage = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
+			{
+				isPageExisted = this.isElementExisted(lnkPage);
 			}
 		}
 		return isPageExisted;

@@ -80,7 +80,7 @@ public class GeneralPage {
   	      	  
     }
 
-	public static void waitForElementToBeCliable(WebDriverWait wait, WebDriver driver, WebElement ele) {
+	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, WebElement ele, long timeOut) {
 		wait = new WebDriverWait(driver, Constant.TimeOut);
 		wait.until(ExpectedConditions.elementToBeClickable(ele));
 	}
