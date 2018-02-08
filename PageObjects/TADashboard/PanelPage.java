@@ -289,7 +289,7 @@ public class PanelPage extends GeneralPage {
     {
         By xpath = By.xpath("//a[.='" + panelName + "']/ancestor::tr//a[.='Delete']");
         myFindElement(xpath,Constant.TimeOut).click();
-        this.waitForAlertPresent(_driveWaitPanelPage, _driverPanelPage);
+        this.waitForAlertPresent(_driveWaitPanelPage, _driverPanelPage,Constant.TimeOut);
     }
 
     // Delete a panel

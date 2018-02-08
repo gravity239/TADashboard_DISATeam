@@ -1,5 +1,6 @@
 package TADashboard;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 import org.openqa.selenium.Alert;
@@ -69,6 +70,7 @@ public class GeneralPage {
 
 	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
+	}
 	
 	public void enterValue(WebElement element, String value)
     {
@@ -173,4 +175,5 @@ public class GeneralPage {
           return found;
       }
 
+	
 }

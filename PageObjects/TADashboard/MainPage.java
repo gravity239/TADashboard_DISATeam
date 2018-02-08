@@ -127,11 +127,8 @@ public class MainPage extends GeneralPage {
 
 	// Select settings of general setting menu.
 	public MainPage selectGeneralSetting(String item) {
-		Utilities.mouseTo(getTabSetting(), _driverMainPage);
-		WebElement settingItem = myFindElement(By.xpath(String.format(_lnkSettingItem, item)), Constant.TimeOut);
-
 		this.mouseTo(getTabSetting(), _driverMainPage);
-		WebElement settingItem = _driverMainPage.findElement(By.xpath(String.format(_lnkSettingItem, item)));
+		WebElement settingItem = myFindElement(By.xpath(String.format(_lnkSettingItem, item)), Constant.TimeOut);
 		settingItem.click();
 		return this;
 	}
@@ -187,79 +184,6 @@ public class MainPage extends GeneralPage {
 		return isExisted;
 	}
 
-    // Go to a page.
-    public MainPage gotoPage(String pageLink)
-    {
-        String[] pages = pageLink.split("->");
-        if (pages.length == 1)
-        {
-            By page = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
-            WebElement LnkPage = myFindElement(page, Constant.TimeOut);
-            LnkPage.click();
-        }
-        else
-        {
-            int pageIndex = 0;
-            while (pageIndex + 1 < pages.length)
-            {
-                By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                WebElement LnkParent = myFindElement(page, Constant.TimeOut);
-                this.mouseTo(LnkParent, _driverMainPage);  
-                pageIndex = pageIndex + 1;
-                page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                WebElement LnkPage = myFindElement(page, Constant.TimeOut);
-                if (pageIndex + 1 == pages.length)
-                {
-                    LnkPage.click();
-                }
-            }     
-        }
-        return this;
-    }
-    
-    // Delete a page.
-    public MainPage DeletePage(String pageLink)
-    {
-        GotoPage(pageLink);
-        this.selectGeneralSetting("Delete");
-        acceptAlertIfAvailable(Constant.TimeOut);
-        String[] pages = pageLink.split("->");
-         if (pages.length == 1)
-        {
-        	By lnkPage = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
-//        	WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-//        	wait.until(ExpectedConditions.invisibilityOfElementLocated(lnkPage));
-        }
-        else
-        {
-            int pageIndex = 0;
-            while (pageIndex + 1 < pages.length)
-            {
-            	By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                WebElement LnkParent = myFindElement(page, Constant.TimeOut);
-                this.mouseTo(LnkParent, _driverMainPage);
-                pageIndex = pageIndex + 1;
-                if (pageIndex + 1 == pages.length)
-                {
-                	By lnkPage = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                    WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-                	wait.until(ExpectedConditions.invisibilityOfElementLocated(lnkPage));
-                }
-            }
-        }
-        return this;
-    }
-    
-    /// Determine if a page exists
-    public boolean isPageExisted(String pageLink)
-    {
-        WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format(_lnkPage, "Overview"))));
-        boolean isPageExisted = false;
-        String[] pages = pageLink.split("->");
-        if (pages.length == 1)
-        {
-
 	// Go to a page.
 	public MainPage GotoPage(String pageLink) {
 		String[] pages = pageLink.split("->");
@@ -294,15 +218,7 @@ public class MainPage extends GeneralPage {
 		return this;
 	}
 
-	// Delete a page.
-	public MainPage deletePage(String pageLink) {
-		GotoPage(pageLink);
-		this.selectGeneralSetting("Delete");
-		acceptAlertIfAvailable(Constant.TimeOut);
-		return this;
-	}
-
-	/// Determine if a page exists
+	// Determine if a page exists
 	public boolean isPageExisted(String pageLink) {
 		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage,
 				By.xpath(String.format(_lnkPage, "Overview")), Constant.TimeOut);
@@ -321,6 +237,14 @@ public class MainPage extends GeneralPage {
 			}
 		}
 		return isPageExisted;
+	}
+
+	// Delete a page.
+	public MainPage deletePage(String pageLink) {
+		GotoPage(pageLink);
+		this.selectGeneralSetting("Delete");
+		acceptAlertIfAvailable(Constant.TimeOut);
+		return this;
 	}
 
 	public void addNewPage(TAPage page) {
@@ -346,9 +270,10 @@ public class MainPage extends GeneralPage {
 		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, lnkPage, Constant.TimeOut);
 	}
 
-	//Go to Data Profile Page
+	// Go to Data Profile Page
 	public DataProfilesPage goToDataProfilesPage() {
 		selectMenuItem("Administer", "Data Profiles");
 		return new DataProfilesPage(_driverMainPage);
 	}
 }
+
