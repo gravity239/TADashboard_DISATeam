@@ -270,6 +270,7 @@ public class MainPage extends GeneralPage {
 		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, lnkPage, Constant.TimeOut);
 	}
 
+	//Go to Data Profile Page
 	public DataProfilesPage goToDataProfilesPage() {
 		selectMenuItem("Administer", "Data Profiles");
 		return new DataProfilesPage(_driverMainPage);
