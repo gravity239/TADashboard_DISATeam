@@ -133,7 +133,7 @@ public class MainPage extends GeneralPage {
 	// Select settings of general setting menu.
 	public MainPage selectGeneralSetting(String item) {
 		Utilities.mouseTo(getTabSetting(), _driverMainPage);
-		WebElement settingItem = _driverMainPage.findElement(By.xpath(String.format(_lnkSettingItem, item)));
+		WebElement settingItem = myFindElement(By.xpath(String.format(_lnkSettingItem, item)), Constant.TimeOut);
 		settingItem.click();
 		return this;
 	}
@@ -234,8 +234,8 @@ public class MainPage extends GeneralPage {
          if (pages.length == 1)
         {
         	By lnkPage = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
-        	WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-        	wait.until(ExpectedConditions.invisibilityOfElementLocated(lnkPage));
+//        	WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
+//        	wait.until(ExpectedConditions.invisibilityOfElementLocated(lnkPage));
         }
         else
         {

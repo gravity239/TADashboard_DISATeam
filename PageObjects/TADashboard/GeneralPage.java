@@ -1,5 +1,6 @@
 package TADashboard;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 import org.openqa.selenium.Alert;
@@ -12,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
@@ -33,19 +35,18 @@ public class GeneralPage {
 			return false;
 		}
 	}
-	
-	public static void waitForAlertPresent(WebDriverWait wait, WebDriver driver)
-	{
+
+	public static void waitForAlertPresent(WebDriverWait wait, WebDriver driver) {
 		wait = new WebDriverWait(driver, Constant.TimeOut);
 		wait.until(ExpectedConditions.alertIsPresent());
 	}
 
-	public static void waitForElementToBeCliable(WebDriverWait wait, WebDriver driver, WebElement ele){
+	public static void waitForElementToBeCliable(WebDriverWait wait, WebDriver driver, WebElement ele) {
 		wait = new WebDriverWait(driver, Constant.TimeOut);
 		wait.until(ExpectedConditions.elementToBeClickable(ele));
 	}
-	
-	public static void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, WebElement ele){
+
+	public static void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, WebElement ele) {
 		wait = new WebDriverWait(driver, Constant.TimeOut);
 		wait.until(ExpectedConditions.visibilityOf(ele));
 	}
@@ -76,8 +77,9 @@ public class GeneralPage {
 				wait.until(ExpectedConditions.elementToBeClickable(by));
 				ele = _driverGeneralPage.findElement(by);
 				if (_driverGeneralPage instanceof JavascriptExecutor) {
-			        ((JavascriptExecutor)_driverGeneralPage).executeScript("arguments[0].style.border='3px solid red'", ele);
-			    }
+					((JavascriptExecutor) _driverGeneralPage).executeScript("arguments[0].style.border='3px solid red'",
+							ele);
+				}
 				break;
 			} catch (StaleElementReferenceException e) {
 				timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
@@ -114,5 +116,22 @@ public class GeneralPage {
 			return false;
 		}
 	}
+	
+	  //Determine if a item that in a item list exists
+	  public boolean isItemExisted(WebElement element, String item)
+      {
+          Select selector = new Select(element);
+          List<WebElement> elements=selector.getOptions();
+          boolean found=false;
+          for(WebElement ele:elements)
+          {
+              if(item.equals(ele.getText()))
+              {
+                  found=true;
+                  break;
+              }
+          }
+          return found;
+      }
 
 }
