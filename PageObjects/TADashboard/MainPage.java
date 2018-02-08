@@ -1,12 +1,8 @@
 package TADashboard;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import Constant.Constant;
@@ -14,6 +10,7 @@ import Common.Utilities;
 
 public class MainPage extends GeneralPage {
 	private WebDriver _driverMainPage;
+	private WebDriverWait _driverWaitMainPage;
 
 	private static final String _lnkMainMenu = "//li[@class='sep']/parent::*/../a[contains(.,'%1$s')]";
 	private static final String _lnkSubMenu = "//li[@class='sep']/parent::*/../a[contains(.,'%1$s')]/following::a[contains(.,'%2$s')]";
@@ -94,11 +91,8 @@ public class MainPage extends GeneralPage {
 
 	// Log out from TA Dashboard page
 	public LoginPage logout() {
-		WebDriverWait wait = new WebDriverWait(_driverMainPage, 10);
-		wait.until(ExpectedConditions.elementToBeClickable(getLnkAccount()));
-		Actions builder = new Actions(_driverMainPage);
-		Action mouseOverLnkAccount = builder.moveToElement(getLnkAccount()).build();
-		mouseOverLnkAccount.perform();
+		this.waitForElementToBeClickable(_driverWaitMainPage, _driverMainPage, getLnkAccount(), Constant.TimeOut);
+		Utilities.mouseTo(getLnkAccount(), _driverMainPage);
 		getLnkLogout().click();
 		return new LoginPage(_driverMainPage);
 	}
@@ -118,11 +112,9 @@ public class MainPage extends GeneralPage {
 	}
 
 	// Switch the repository which the user wants to work on
-	public void ChooseRepository(String repositoryName) {
-		selectMenuItem("Repository", repositoryName);
-		WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-		wait.until(
-				ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format(_lnkMainMenu, repositoryName))));
+	public void chooseRepository(String repositoryName) {
+		selectMenuItem("Repository", repositoryName);		
+		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath(String.format(_lnkMainMenu, repositoryName)), Constant.TimeOut);
 	}
 
 	// Get the name of the repository.
@@ -143,7 +135,7 @@ public class MainPage extends GeneralPage {
 		return getTabSetting().isEnabled();
 	}
 
-	public MainPage AddPage(String pageName, String parentPage, int numberOfColumn, String displayAferPage,
+	public MainPage addPage(String pageName, String parentPage, int numberOfColumn, String displayAferPage,
 			boolean publicCheckBox) {
 		this.selectGeneralSetting("Add Page");
 		getTxtNewPageName().sendKeys(pageName);
@@ -175,23 +167,21 @@ public class MainPage extends GeneralPage {
 			Utilities.mouseTo(LnkParentPage, _driverMainPage);
 		}
 			
-		WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-		wait.until(ExpectedConditions
-				.visibilityOfElementLocated(lnkPage));
+		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, lnkPage, Constant.TimeOut);
 		
 		return this;
 	}
 	
 	// Determines if a page is next to another page.
-	public boolean IsPageNextToPage(String currentPage, String nextPage) {
-		 boolean isPageNextToPage = false;
+	public boolean isPageNextToPage(String currentPage, String nextPage) {
+		 boolean isExisted = false;
 		By current = By.xpath("//a[.='" + nextPage.replace(" ", "\u00A0") + "']/parent::*/preceding-sibling::*/a[.='"
 				+ currentPage.replace(" ", "\u00A0") + "']");
 		if (myFindElement(current, Constant.TimeOut).getText().equals(currentPage)) 
 		{
-			isPageNextToPage =  true;			
+			isExisted =  true;			
 		}
-		return isPageNextToPage;
+		return isExisted;
 	}
 
     // Go to a page.
@@ -225,7 +215,7 @@ public class MainPage extends GeneralPage {
     }
     
     // Delete a page.
-    public MainPage DeletePage(String pageLink)
+    public MainPage deletePage(String pageLink)
     {
         GotoPage(pageLink);
         this.selectGeneralSetting("Delete");
@@ -234,8 +224,7 @@ public class MainPage extends GeneralPage {
          if (pages.length == 1)
         {
         	By lnkPage = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
-        	WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-        	wait.until(ExpectedConditions.invisibilityOfElementLocated(lnkPage));
+        	this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, lnkPage, Constant.TimeOut);
         }
         else
         {
@@ -249,8 +238,7 @@ public class MainPage extends GeneralPage {
                 if (pageIndex + 1 == pages.length)
                 {
                 	By lnkPage = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-                    WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-                	wait.until(ExpectedConditions.invisibilityOfElementLocated(lnkPage));
+                	this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, lnkPage, Constant.TimeOut);
                 }
             }
         }
@@ -259,9 +247,9 @@ public class MainPage extends GeneralPage {
     
     /// Determine if a page exists
     public boolean isPageExisted(String pageLink)
-    {
-        WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format(_lnkPage, "Overview"))));
+    {       
+        this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath(String.format(_lnkPage, "Overview")), Constant.TimeOut);
+        
         boolean isPageExisted = false;
         String[] pages = pageLink.split("->");
         if (pages.length == 1)
@@ -282,5 +270,10 @@ public class MainPage extends GeneralPage {
             }
         }
         return isPageExisted;
+    }
+    
+    public DataProfilesPage goToDataProfilesPage() {
+		selectMenuItem("Administer", "Data Profiles");		
+		return new DataProfilesPage(_driverMainPage);
     }
 }

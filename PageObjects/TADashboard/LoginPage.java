@@ -4,7 +4,6 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -57,7 +56,7 @@ public class LoginPage extends GeneralPage {
 
 	// Get the message of the alert dialog.
 	public String getAlertMessage() {
-		GeneralPage.waitForAlertPresent(_driverWaitLoginPage, _driverLoginPage);
+		this.waitForAlertPresent(_driverWaitLoginPage, _driverLoginPage, Constant.TimeOut);
 		Alert alert = _driverLoginPage.switchTo().alert();
 		return alert.getText();
 	}

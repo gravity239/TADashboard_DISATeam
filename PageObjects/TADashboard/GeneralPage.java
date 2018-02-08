@@ -13,7 +13,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.asserts.SoftAssert;
 
 import Constant.Constant;
 
@@ -34,20 +33,25 @@ public class GeneralPage {
 		}
 	}
 	
-	public static void waitForAlertPresent(WebDriverWait wait, WebDriver driver)
+	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut)
 	{
-		wait = new WebDriverWait(driver, Constant.TimeOut);
+		wait = new WebDriverWait(driver, timeOut);
 		wait.until(ExpectedConditions.alertIsPresent());
 	}
 
-	public static void waitForElementToBeCliable(WebDriverWait wait, WebDriver driver, WebElement ele){
-		wait = new WebDriverWait(driver, Constant.TimeOut);
-		wait.until(ExpectedConditions.elementToBeClickable(ele));
+	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, By locator, long timeOut){
+		wait = new WebDriverWait(driver, timeOut);
+		wait.until(ExpectedConditions.elementToBeClickable(locator));
 	}
 	
-	public static void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, WebElement ele){
-		wait = new WebDriverWait(driver, Constant.TimeOut);
-		wait.until(ExpectedConditions.visibilityOf(ele));
+	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, WebElement element, long timeOut){
+		wait = new WebDriverWait(driver, timeOut);
+		wait.until(ExpectedConditions.elementToBeClickable(element));
+	}
+	
+	public void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, By locator, long timeOut){
+		wait = new WebDriverWait(driver, timeOut);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
 	}
 
 	public void acceptAlertIfAvailable(long timeout) {

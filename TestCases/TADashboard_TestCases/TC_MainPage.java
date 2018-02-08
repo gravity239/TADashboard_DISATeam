@@ -22,16 +22,16 @@ public class TC_MainPage extends TestBase {
 		LoginPage loginPage = new LoginPage(driver);
 		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
 
-		mainPage.AddPage(pageName, "", 0, "", false);
+		mainPage.addPage(pageName, "", 0, "", false);
 
 		// VP: New page is displayed besides "Overview" page
 
-		boolean isPageNextToPage = mainPage.IsPageNextToPage("Overview", pageName);
+		boolean isPageNextToPage = mainPage.isPageNextToPage("Overview", pageName);
 		softAssert.assertEquals(isPageNextToPage, true, "\nThe new page isn't displayed besides \"Overview\" page");
 
 		// Post-condition: Delete newly added page
 
-		mainPage.DeletePage(pageName);
+		mainPage.deletePage(pageName);
 		softAssert.assertAll();
 	}
 }
