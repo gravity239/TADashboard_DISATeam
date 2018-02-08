@@ -11,7 +11,10 @@ import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import Constant.Constant;
@@ -32,24 +35,64 @@ public class GeneralPage {
 			return false;
 		}
 	}
+
+	// Move mouse to a element
+	public void mouseTo(WebElement element, WebDriver webDriver) {
+		Actions builder = new Actions(webDriver);
+		Action mouseOverElement = builder.moveToElement(element).build();
+		mouseOverElement.perform();
+	}
+
+	// Check or uncheck a checkbox
+	public void check(WebElement element) {
+		boolean isChecked = element.isSelected();
+		if (isChecked == false) {
+			element.click();
+		}
+	}
+
+	// Check or uncheck a checkbox
+	public void unCheck(WebElement element) {
+		boolean isChecked = element.isSelected();
+		if (isChecked == true) {
+			element.click();
+		}
+	}
 	
-	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut)
-	{
+	public void selectComboboxValue(Select sElement, String value)
+    {
+  	  if ((value!= null) && (value!=""))
+  	  {  		  
+  		sElement.selectByVisibleText(value);
+  	  }    	 
+    }
+	
+	public void enterValue(WebElement element, String value)
+    {
+  	  if (value!= null)
+  	  {
+  		  element.clear();
+  		  element.sendKeys(value);
+  	  }
+  	      	  
+    }
+
+	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
 		wait.until(ExpectedConditions.alertIsPresent());
 	}
 
-	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, By locator, long timeOut){
+	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, By locator, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
 		wait.until(ExpectedConditions.elementToBeClickable(locator));
 	}
-	
-	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, WebElement element, long timeOut){
+
+	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, WebElement element, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
 		wait.until(ExpectedConditions.elementToBeClickable(element));
 	}
-	
-	public void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, By locator, long timeOut){
+
+	public void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, By locator, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
 	}
@@ -80,8 +123,9 @@ public class GeneralPage {
 				wait.until(ExpectedConditions.elementToBeClickable(by));
 				ele = _driverGeneralPage.findElement(by);
 				if (_driverGeneralPage instanceof JavascriptExecutor) {
-			        ((JavascriptExecutor)_driverGeneralPage).executeScript("arguments[0].style.border='3px solid red'", ele);
-			    }
+					((JavascriptExecutor) _driverGeneralPage).executeScript("arguments[0].style.border='3px solid red'",
+							ele);
+				}
 				break;
 			} catch (StaleElementReferenceException e) {
 				timeout = timeout - stopWatch.elapsed(TimeUnit.SECONDS);
