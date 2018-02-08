@@ -1,6 +1,5 @@
 package TADashboard;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 import org.openqa.selenium.Alert;
@@ -12,10 +11,11 @@ import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.asserts.SoftAssert;
 
 import Constant.Constant;
 
@@ -36,19 +36,58 @@ public class GeneralPage {
 		}
 	}
 
-	public static void waitForAlertPresent(WebDriverWait wait, WebDriver driver) {
-		wait = new WebDriverWait(driver, Constant.TimeOut);
-		wait.until(ExpectedConditions.alertIsPresent());
+	// Move mouse to a element
+	public void mouseTo(WebElement element, WebDriver webDriver) {
+		Actions builder = new Actions(webDriver);
+		Action mouseOverElement = builder.moveToElement(element).build();
+		mouseOverElement.perform();
 	}
+
+	// Check or uncheck a checkbox
+	public void check(WebElement element) {
+		boolean isChecked = element.isSelected();
+		if (isChecked == false) {
+			element.click();
+		}
+	}
+
+	// Check or uncheck a checkbox
+	public void unCheck(WebElement element) {
+		boolean isChecked = element.isSelected();
+		if (isChecked == true) {
+			element.click();
+		}
+	}
+	
+	public void selectComboboxValue(Select sElement, String value)
+    {
+  	  if ((value!= null) && (value!=""))
+  	  {  		  
+  		sElement.selectByVisibleText(value);
+  	  }    	 
+    }
+
+	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut) {
+		wait = new WebDriverWait(driver, timeOut);
+	
+	public void enterValue(WebElement element, String value)
+    {
+  	  if (value!= null)
+  	  {
+  		  element.clear();
+  		  element.sendKeys(value);
+  	  }
+  	      	  
+    }
 
 	public static void waitForElementToBeCliable(WebDriverWait wait, WebDriver driver, WebElement ele) {
 		wait = new WebDriverWait(driver, Constant.TimeOut);
 		wait.until(ExpectedConditions.elementToBeClickable(ele));
 	}
 
-	public static void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, WebElement ele) {
-		wait = new WebDriverWait(driver, Constant.TimeOut);
-		wait.until(ExpectedConditions.visibilityOf(ele));
+	public void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, By locator, long timeOut) {
+		wait = new WebDriverWait(driver, timeOut);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
 	}
 
 	public void acceptAlertIfAvailable(long timeout) {
