@@ -283,4 +283,11 @@ public class MainPage extends GeneralPage {
         }
         return isPageExisted;
     }
+    
+    public void goToDataProfilesPage() {
+		selectMenuItem("Administer", "Data Profiles");
+		WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
+		wait.until(
+				ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format(_lnkMainMenu, "Data Profiles"))));
+	}
 }
