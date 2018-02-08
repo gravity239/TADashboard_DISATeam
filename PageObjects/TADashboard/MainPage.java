@@ -1,7 +1,6 @@
 package TADashboard;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
@@ -118,7 +117,7 @@ public class MainPage extends GeneralPage {
 	}
 
 	// Switch the repository which the user wants to work on
-	public void ChooseRepository(String repositoryName) {
+	public void chooseRepository(String repositoryName) {
 		selectMenuItem("Repository", repositoryName);
 		WebDriverWait wait = new WebDriverWait(_driverMainPage, Constant.TimeOut);
 		wait.until(
@@ -143,7 +142,7 @@ public class MainPage extends GeneralPage {
 		return getTabSetting().isEnabled();
 	}
 
-	public MainPage AddPage(String pageName, String parentPage, int numberOfColumn, String displayAferPage,
+	public MainPage addPage(String pageName, String parentPage, int numberOfColumn, String displayAferPage,
 			boolean publicCheckBox) {
 		this.selectGeneralSetting("Add Page");
 		getTxtNewPageName().sendKeys(pageName);
@@ -183,15 +182,15 @@ public class MainPage extends GeneralPage {
 	}
 	
 	// Determines if a page is next to another page.
-	public boolean IsPageNextToPage(String currentPage, String nextPage) {
-		 boolean isPageNextToPage = false;
+	public boolean isPageNextToPage(String currentPage, String nextPage) {
+		 boolean isExisted = false;
 		By current = By.xpath("//a[.='" + nextPage.replace(" ", "\u00A0") + "']/parent::*/preceding-sibling::*/a[.='"
 				+ currentPage.replace(" ", "\u00A0") + "']");
 		if (myFindElement(current, Constant.TimeOut).getText().equals(currentPage)) 
 		{
-			isPageNextToPage =  true;			
+			isExisted =  true;			
 		}
-		return isPageNextToPage;
+		return isExisted;
 	}
 
     // Go to a page.
@@ -225,7 +224,7 @@ public class MainPage extends GeneralPage {
     }
     
     // Delete a page.
-    public MainPage DeletePage(String pageLink)
+    public MainPage deletePage(String pageLink)
     {
         GotoPage(pageLink);
         this.selectGeneralSetting("Delete");
