@@ -3,6 +3,7 @@ package TADashboard_TestCases;
 import org.testng.annotations.Test;
 
 import Constant.Constant;
+import Constant.EnumPreSetDataProfiles;
 import TADashboard.DataProfilesPage;
 import TADashboard.LoginPage;
 import TestBase.TestBase;
@@ -24,10 +25,15 @@ public class TC_DataProfilesPage extends TestBase {
 				.goToDataProfilesPage();
 
 		// 6 VP Check Pre-set Data Profile are populated correctly in profiles page
-		String dataProfile = "Action Implementation By Status";
-		String itemType = "Action";
-		String relatedData = "";
-
-		softAssert.assertEquals(dataProfilesPage.isDataProfileExisted(dataProfile, itemType, relatedData), true);
+		
+		for (EnumPreSetDataProfiles preSetDataProfile : EnumPreSetDataProfiles.values()) {
+			String dataProfile = preSetDataProfile.getDataProfile();
+			String itemType = preSetDataProfile.getItemType();
+			String relatedData = preSetDataProfile.getRelatedData();
+			softAssert.assertEquals(dataProfilesPage.isDataProfileExisted(dataProfile, itemType, relatedData), true);
+		}
+		
+		
+		
 	}
 }
