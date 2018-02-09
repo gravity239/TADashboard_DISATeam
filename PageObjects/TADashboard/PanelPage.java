@@ -53,9 +53,9 @@ public class PanelPage extends MainPage {
 	private static final By _cmbStatisticField = By.xpath("//select[@id='cbbStatField'");
 	private static final By _cmbStatisticFieldValue = By.xpath("//select[@id='cbbStatFieldValue'");
 	private static final By _rbSetAsHeatValue = By.xpath("//input[@id='radHeatValue_default']");
-	private static final String panelTypeInAddNewDialog = "//table[@id='infoSettings']//td[.='Type']/following-sibling::td/descendant::input";
-	private static final String panelTypeInEditDialog = "//table[@id='infoSettings']//td[.='Type']/following-sibling::td/label[@class='panel_setting_paneltype']";
-	private static final String panelTypeToSelect = "//label[contains(.,'{0}')]/input[contains(@id,'radPanelType')]";
+	private static final String _panelTypeInAddNewDialog = "//table[@id='infoSettings']//td[.='Type']/following-sibling::td/descendant::input";
+	private static final String _panelTypeInEditDialog = "//table[@id='infoSettings']//td[.='Type']/following-sibling::td/label[@class='panel_setting_paneltype']";
+	private static final String _panelTypeToSelect = "//label[contains(.,'{0}')]/input[contains(@id,'radPanelType')]";
 	private static final By _btnCancel = By
 			.xpath("//div[@class='ui-dialog editpanelDlg' and contains(@style,'display: block')]//input[@id='Cancel']");
 	private static final By _cmbSelectpage = By.xpath("//select[@id='cbbPages']");
@@ -202,7 +202,7 @@ public class PanelPage extends MainPage {
 		return new Select(myFindElement(_cmbStatisticOn, Constant.TimeOut));
 	}
 
-	public Select grtCmbSeriesValue() {
+	public Select getCmbSeriesValue() {
 		return new Select(myFindElement(_cmbSeriesValue, Constant.TimeOut));
 	}
 
@@ -254,20 +254,20 @@ public class PanelPage extends MainPage {
     }
 
     // Determines if a panel is created.
-    public boolean IsPanelCreated(String panelName)
+    public boolean isPanelCreated(String panelName)
     {
         By panel = By.xpath("//a[.='" + panelName + "']");
         return this.isElementExisted(panel);
     }
 
     // Get header of the setting
-    public String GetSettingHeader()
+    public String getSettingHeader()
     {
         return getLblSettingHeader().getText();
     }
     
     // Wait for adding panel.
-    public PanelPage WaitForAddingPanel(String panelName)
+    public PanelPage waitForAddingPanel(String panelName)
     {
         By panel = By.xpath("//a[.='" + panelName + "']");
         this.isElementExisted(panel);
@@ -276,12 +276,11 @@ public class PanelPage extends MainPage {
     }
 
     // Click Edit Panel link
-    public PanelPage ClickEditPanel(String panelName)
+    public void clickEditPanel(String panelName)
     {
         By xpath = By.xpath("//a[.='" + panelName + "']/ancestor::tr//a[.='Edit']");
         myFindElement(xpath,Constant.TimeOut).click();
-        this.isElementExisted(_txtDisplayName);
-        return this;
+        this.isElementExisted(_txtDisplayName);        
     }
 
     //Click Delete Panel link
@@ -293,9 +292,8 @@ public class PanelPage extends MainPage {
     }
 
     // Delete a panel
-    public PanelPage DeletePanel(String panelName)
-    {
-        By xpath = By.xpath("//a[.='" + panelName + "']/ancestor::tr//a[.='Delete']");
+    public PanelPage deletePanel(String panelName)
+    {        
         this.selectMenuItem("Administer", "Panels");
         clickDeletePanel(panelName);
         this.acceptAlertIfAvailable(Constant.TimeOut);
@@ -308,7 +306,7 @@ public class PanelPage extends MainPage {
         String typeOfPanel = "";
         if (getLblPanelDialog().getText().equals("Add New Panel"))
         {
-            List<WebElement> radioButtonGroup = _driverPanelPage.findElements(By.xpath(panelTypeInAddNewDialog));
+            List<WebElement> radioButtonGroup = _driverPanelPage.findElements(By.xpath(_panelTypeInAddNewDialog));
             for (WebElement radioButton: radioButtonGroup)
             {
                 if (radioButton.isSelected() == true)
@@ -327,7 +325,7 @@ public class PanelPage extends MainPage {
         }
         else
         {
-            WebElement LabelPanelType = myFindElement(By.xpath(panelTypeInEditDialog),Constant.TimeOut);
+            WebElement LabelPanelType = myFindElement(By.xpath(_panelTypeInEditDialog),Constant.TimeOut);
             typeOfPanel = LabelPanelType.getText();
         }
         return typeOfPanel;
