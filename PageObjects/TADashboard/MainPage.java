@@ -125,14 +125,6 @@ public class MainPage extends GeneralPage {
 		return getLblRepositoryName().getText();
 	}
 
-	// Select settings of general setting menu.
-	public MainPage selectGeneralSetting(String item) {
-		this.mouseTo(getTabSetting(), _driverMainPage);
-		WebElement settingItem = _driverMainPage.findElement(By.xpath(String.format(_lnkSettingItem, item)));
-		settingItem.click();
-		return this;
-	}
-
 	// Determines if dashboard is locked by dialog
 	public boolean isDashboardLockedByDialog() {
 		return getTabSetting().isEnabled();
@@ -218,15 +210,7 @@ public class MainPage extends GeneralPage {
 		return this;
 	}
 
-	// Delete a page.
-	public MainPage deletePage(String pageLink) {
-		GotoPage(pageLink);
-		this.selectGeneralSetting("Delete");
-		acceptAlertIfAvailable(Constant.TimeOut);
-		return this;
-	}
-
-	/// Determine if a page exists
+	// Determine if a page exists
 	public boolean isPageExisted(String pageLink) {
 		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage,
 				By.xpath(String.format(_lnkPage, "Overview")), Constant.TimeOut);
@@ -245,6 +229,14 @@ public class MainPage extends GeneralPage {
 			}
 		}
 		return isPageExisted;
+	}
+
+	// Delete a page.
+	public MainPage deletePage(String pageLink) {
+		GotoPage(pageLink);
+		this.selectGeneralSetting("Delete");
+		acceptAlertIfAvailable(Constant.TimeOut);
+		return this;
 	}
 
 	public void addNewPage(TAPage page) {
@@ -270,7 +262,14 @@ public class MainPage extends GeneralPage {
 		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, lnkPage, Constant.TimeOut);
 	}
 
-	//Go to Data Profile Page
+	// Select settings of general setting menu.
+	public void selectGeneralSetting(String item) {
+		this.mouseTo(getTabSetting(), _driverMainPage);
+		WebElement settingItem = myFindElement(By.xpath(String.format(_lnkSettingItem, item)), Constant.TimeOut);
+		settingItem.click();
+	}
+
+	// Go to Data Profile Page
 	public DataProfilesPage goToDataProfilesPage() {
 		selectMenuItem("Administer", "Data Profiles");
 		return new DataProfilesPage(_driverMainPage);

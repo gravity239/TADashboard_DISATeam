@@ -1,5 +1,6 @@
 package TADashboard;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 import org.openqa.selenium.Alert;
@@ -66,6 +67,10 @@ public class GeneralPage {
   		sElement.selectByVisibleText(value);
   	  }    	 
     }
+
+	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut) {
+		wait = new WebDriverWait(driver, timeOut);
+	}
 	
 	public void enterValue(WebElement element, String value)
     {
@@ -77,19 +82,9 @@ public class GeneralPage {
   	      	  
     }
 
-	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut) {
-		wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.alertIsPresent());
-	}
-
-	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, By locator, long timeOut) {
-		wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.elementToBeClickable(locator));
-	}
-
-	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, WebElement element, long timeOut) {
-		wait = new WebDriverWait(driver, timeOut);
-		wait.until(ExpectedConditions.elementToBeClickable(element));
+	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, WebElement ele, long timeOut) {
+		wait = new WebDriverWait(driver, Constant.TimeOut);
+		wait.until(ExpectedConditions.elementToBeClickable(ele));
 	}
 
 	public void waitForElementToBeVisible(WebDriverWait wait, WebDriver driver, By locator, long timeOut) {
@@ -162,5 +157,21 @@ public class GeneralPage {
 			return false;
 		}
 	}
-
+	
+	  //Determine if a item that in a item list exists
+	  public boolean isItemExisted(WebElement element, String item)
+      {
+          Select selector = new Select(element);
+          List<WebElement> elements=selector.getOptions();
+          boolean found=false;
+          for(WebElement ele:elements)
+          {
+              if(item.equals(ele.getText()))
+              {
+                  found=true;
+                  break;
+              }
+          }
+          return found;
+      }	  	
 }
