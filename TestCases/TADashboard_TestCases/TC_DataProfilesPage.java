@@ -21,19 +21,16 @@ public class TC_DataProfilesPage extends TestBase {
 		// 5 Step Click Administer->Data Profiles
 		LoginPage loginPage = new LoginPage(driver);
 		DataProfilesPage dataProfilesPage = loginPage.open()
-				.login(Constant.Username, Constant.Password, Constant.DefaultRepo)
-				.goToDataProfilesPage();
+				.login(Constant.Username, Constant.Password, Constant.DefaultRepo).goToDataProfilesPage();
 
 		// 6 VP Check Pre-set Data Profile are populated correctly in profiles page
-		
+
 		for (EnumPreSetDataProfiles preSetDataProfile : EnumPreSetDataProfiles.values()) {
 			String dataProfile = preSetDataProfile.getDataProfile();
 			String itemType = preSetDataProfile.getItemType();
 			String relatedData = preSetDataProfile.getRelatedData();
 			softAssert.assertEquals(dataProfilesPage.isDataProfileExisted(dataProfile, itemType, relatedData), true);
 		}
-		
-		
-		
+
 	}
 }
