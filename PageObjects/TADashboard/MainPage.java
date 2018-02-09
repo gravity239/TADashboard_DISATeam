@@ -23,7 +23,7 @@ public class MainPage extends GeneralPage {
 	private static final By _tabSetting = By.xpath("//li[@class='mn-setting']");
 	private static final By _chbPublic = By.xpath("//input[@id='ispublic']");
 	private static final By _txtNewPageName = By.xpath("//div[@id='div_popup']//input[@class='page_txt_name']");
-	private static final By _cmbParentPage = By.xpath("//div[@id='div_popup']//input[@class='page_txt_name']");
+	private static final By _cmbParentPage = By.xpath("//div[@id='div_popup']//select[@id='parent']");
 	private static final By _cmbPageDisplayAfter = By.xpath("//div[@id='div_popup']//select[@id='afterpage']");
 	private static final By _cbmNumberOfColumns = By.xpath("//div[@id='div_popup']//select[@id='columnnumber']");
 	private static final By _btnPageOK = By.xpath("//div[@id='div_popup']//input[contains(@onclick,'doAddPage')]");
@@ -254,7 +254,7 @@ public class MainPage extends GeneralPage {
 		}
 		getBtnPageOK().click();
 		By lnkPage = By.xpath(String.format(_lnkPage, page.getPageName()).replace(" ", "\u00A0"));
-		if (page.getPageParent() != "") {
+		if (page.getPageParent() != null) {
 			By lnkParentPage = By.xpath(String.format(_lnkParentPage, page.getPageName()).replace(" ", "\u00A0"));
 			WebElement LnkParentPage = myFindElement(lnkParentPage, Constant.TimeOut);
 			this.mouseTo(LnkParentPage, _driverMainPage);
