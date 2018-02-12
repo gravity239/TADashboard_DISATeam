@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import Common.Utilities;
 import TADashboard.LoginPage;
 import TADashboard.MainPage;
+import TADashboard.GeneralPage;
 import TestBase.TestBase;
 import Constant.Constant;
 import DataObject.TAPage;
@@ -96,20 +97,20 @@ public class TC_MainPage extends TestBase {
 		String pageName = Utilities.uniquePageName("Page");
 		// 1. Navigate to Dashboard login page. Login with valid account
 		// 2. Go to Global Setting -> Add page. Enter Page Name field
-		
+
 		LoginPage loginPage = new LoginPage(driver);
 		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
 		page = new TAPage(pageName);
 		mainPage.addNewPage(page);
-		
+
 		// VP check add page successfully
 		softAssert.assertEquals(mainPage.isPageExisted(pageName), true);
-		
+
 		// Add another page after the first page
 		String pageName2 = Utilities.uniquePageName("Page");
 		pageChild = new TAPage(pageName2, null, 0, pageName);
 		mainPage.addNewPage(pageChild);
-		
+
 		// VP check that the second page displays beside the first page
 		softAssert.assertEquals(mainPage.isPageNextToPage(pageName, pageName2), true);
 
@@ -122,69 +123,137 @@ public class TC_MainPage extends TestBase {
 		String pageName = Utilities.uniquePageName("Page");
 		// 1. Navigate to Dashboard login page. Login with valid account
 		// 2. Go to Global Setting -> Add page. Enter Page Name field
-		
+
 		LoginPage loginPage = new LoginPage(driver);
 		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
-		
+
 		// Add a public page
 		page = new TAPage(pageName, null, 0, null, true);
 		mainPage.addNewPage(page);
-		
+
 		// VP check add page successfully
 		softAssert.assertEquals(mainPage.isPageExisted(pageName), true);
 		// Add another page which is child of the first page.
-		
+
 		String pageName2 = Utilities.uniquePageName("Page");
 		pageChild = new TAPage(pageName2, pageName, 0, null, false);
 		mainPage.addNewPage(pageChild);
-		// VP check that the second page displays beside the first page
+		// VP check that the second page displays
 		softAssert.assertEquals(mainPage.isPageExisted(pageName2), true);
 		// logout and login with other account
 		mainPage.logout();
 		loginPage.login(Constant.OtherUsername, Constant.OtherPassword, Constant.DefaultRepo);
 		// VP the childpage is invisible
 		softAssert.assertEquals(mainPage.isPageExisted(pageName2), false);
-		//Post condition.
+		// Post condition.
 		loginPage.logout();
 		loginPage.login(Constant.Username, Constant.Password, Constant.DefaultRepo);
 
 	}
 
-	
 	@Test
 	public void TC019_DA_MP() {
-		System.out.println(
-				"Verify user is able to edit the \"Public\" setting of any page successfully");
+		System.out.println("Verify user is able to edit the \"Public\" setting of any page successfully");
 		String pageName = Utilities.uniquePageName("Page");
 		// 1. Navigate to Dashboard login page. Login with valid account
 		// 2. Go to Global Setting -> Add page. Enter Page Name field
-		
+
 		LoginPage loginPage = new LoginPage(driver);
 		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
-		
+
 		// Add a non-public page
 		page = new TAPage(pageName, null, 0, null, false);
 		mainPage.addNewPage(page);
-		
+
 		// VP check add page successfully
 		softAssert.assertEquals(mainPage.isPageExisted(pageName), true);
+
 		// Add another public page
-		
 		String pageName2 = Utilities.uniquePageName("Page");
 		TAPage page2 = new TAPage(pageName2, null, 0, null, true);
 		mainPage.addNewPage(page2);
-		// VP check that the second page displays beside the first page
+
+		// VP check that the second page displays
 		softAssert.assertEquals(mainPage.isPageExisted(pageName2), true);
-		// logout and login with other account
+
+		// edit page and page2
+		page.setPublic(true);
+		mainPage.editPage(pageName, page);
+		page2.setPublic(false);
+		mainPage.editPage(pageName2, page2);
 		mainPage.logout();
+
+		// login to other account
 		loginPage.login(Constant.OtherUsername, Constant.OtherPassword, Constant.DefaultRepo);
-		// VP the childpage is invisible
+
+		// VP the page is is visibled and can be accessed
+
+		softAssert.assertEquals(mainPage.isPageExisted(pageName), true);
+		mainPage.gotoPage(pageName);
+
+		// VP the page2 is invisible.
+
 		softAssert.assertEquals(mainPage.isPageExisted(pageName2), false);
-		//Post condition.
+
+		// Post condition.
 		loginPage.logout();
 		loginPage.login(Constant.Username, Constant.Password, Constant.DefaultRepo);
 
 	}
 
-	
+	@Test
+	public void TC020_DA_MP() {
+		System.out.println(
+				"Verify user can remove any main parent page except \"Overview\" page successfully and the order of pages stays persistent as long as there is not children page under it");
+		String pageName = Utilities.uniquePageName("Page");
+		// 1. Navigate to Dashboard login page. Login with valid account
+		// 2. Go to Global Setting -> Add page. Enter Page Name field
+
+		LoginPage loginPage = new LoginPage(driver);
+		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
+
+		// Add a non-public page
+		TAPage page1 = new TAPage(pageName, null, 0, null, false);
+		mainPage.addNewPage(page1);
+
+		// VP check add page successfully
+		softAssert.assertEquals(mainPage.isPageExisted(pageName), true);
+
+		// Add child page
+		String pageName2 = Utilities.uniquePageName("Page");
+		TAPage page2 = new TAPage(pageName2, pageName, 0, null, false);
+		mainPage.addNewPage(page2);
+
+		// VP check that the child page displays
+		softAssert.assertEquals(mainPage.isPageExisted(pageName2), true);
+
+		// delete parent page and verify displayed message.
+		mainPage.gotoPage(pageName);
+		mainPage.selectGeneralSetting("Delete");
+		softAssert.assertEquals(mainPage.getAlertMessage(), "Are you sure you want to delete this page?");
+		mainPage.acceptAlertIfAvailable(Constant.TimeOut);
+		softAssert.assertEquals(mainPage.getAlertMessage(),
+				"Can not delete page '" + pageName + "' since it has children page(s)");
+		mainPage.acceptAlertIfAvailable(Constant.TimeOut);
+
+		// delete childpage and verify displayed message.
+		mainPage.gotoPage(pageName + "->" + pageName2);
+		mainPage.selectGeneralSetting("Delete");
+		softAssert.assertEquals(mainPage.getAlertMessage(), "Are you sure you want to delete this page?");
+		mainPage.acceptAlertIfAvailable(Constant.TimeOut);
+
+		// VP that childpage is deleted
+		softAssert.assertEquals(mainPage.isPageExisted(pageName2), false);
+
+		// delete parentpage again.
+		mainPage.deletePage(pageName);
+
+		// Vp parent page is deleted
+		softAssert.assertEquals(mainPage.isPageExisted(pageName), false);
+
+		// Goto Overview and check that there is no delete icon.
+		mainPage.gotoPage("Overview");
+		softAssert.assertEquals(mainPage._lnkDeletePage().isDisplayed(), false);
+	}
+
 }

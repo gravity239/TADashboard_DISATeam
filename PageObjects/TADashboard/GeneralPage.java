@@ -22,6 +22,7 @@ import Constant.Constant;
 
 public class GeneralPage {
 	protected WebDriver _driverGeneralPage;
+	private WebDriverWait _driverWaitGeneralPage;
 
 	public GeneralPage(WebDriver driver) {
 		this._driverGeneralPage = driver;
@@ -105,7 +106,8 @@ public class GeneralPage {
 			} catch (UnhandledAlertException ex) {
 			}
 		} while ((System.currentTimeMillis() < waitForAlert) && (!boolFound));
-	}
+		
+		}
 
 	// Override FindElement
 	public WebElement myFindElement(By by, long timeout) {
@@ -174,5 +176,12 @@ public class GeneralPage {
               }
           }
           return found;
-      }	  	
+      }	  
+	  
+	  public String getAlertMessage() {
+			this.waitForAlertPresent(_driverWaitGeneralPage, _driverGeneralPage, Constant.TimeOut);
+			Alert alert = _driverGeneralPage.switchTo().alert();
+			return alert.getText();
+		}
+	  
 }
