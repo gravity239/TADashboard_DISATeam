@@ -22,6 +22,7 @@ import Constant.Constant;
 
 public class GeneralPage {
 	protected WebDriver _driverGeneralPage;
+	private WebDriverWait _driverWaitGeneralPage;
 
 	public GeneralPage(WebDriver driver) {
 		this._driverGeneralPage = driver;
@@ -180,4 +181,10 @@ public class GeneralPage {
 
 		return cellValue;
 	}	
+	
+	 public String getAlertMessage() {
+			this.waitForAlertPresent(_driverWaitGeneralPage, _driverGeneralPage, Constant.TimeOut);
+			Alert alert = _driverGeneralPage.switchTo().alert();
+			return alert.getText();
+		}
 }

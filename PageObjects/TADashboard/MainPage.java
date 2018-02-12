@@ -31,7 +31,8 @@ public class MainPage extends GeneralPage {
 	private static final By _btnPageCancel = By
 			.xpath("//div[@id='div_popup']//input[contains(@onclick,'closeWindow')]");
 	private static final By _dlgPopupHeader = By.xpath("//div[@id='div_popup']//td[@class='ptc']/h2");
-
+	private static final By _lnkDeletePage = By.xpath("//li[@class='mn-setting']//a[ .='Delete']");
+	
 	public WebElement getLnkAccount() {
 		return myFindElement(_lnkAccount, Constant.TimeOut);
 	}
@@ -80,6 +81,12 @@ public class MainPage extends GeneralPage {
 		return myFindElement(_dlgPopupHeader, Constant.TimeOut);
 	}
 
+	public WebElement _lnkDeletePage() {
+		return myFindElement(_lnkDeletePage, Constant.TimeOut);
+	}
+
+	
+	
 	public MainPage(WebDriver driver) {
 		super(driver);
 		this._driverMainPage = driver;
