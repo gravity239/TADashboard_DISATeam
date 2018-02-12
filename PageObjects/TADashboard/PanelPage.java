@@ -89,8 +89,8 @@ public class PanelPage extends MainPage {
 		return myFindElement(_rbHeatMap, Constant.TimeOut);
 	}
 
-	public WebElement getCmbDataProfile() {
-		return myFindElement(_cmbDataProfile, Constant.TimeOut);
+	public Select getCmbDataProfile() {
+		return new Select(myFindElement(_cmbDataProfile, Constant.TimeOut));
 	}
 
 	public WebElement getTxtDisplayName() {

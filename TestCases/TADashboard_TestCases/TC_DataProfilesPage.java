@@ -4,6 +4,7 @@ import org.testng.annotations.Test;
 
 import Common.Utilities;
 import Constant.Constant;
+import Constant.EnumItemType;
 import Constant.EnumPreSetDataProfiles;
 import TADashboard.DataProfilesPage;
 import TADashboard.LoginPage;
@@ -112,9 +113,112 @@ public class TC_DataProfilesPage extends TestBase {
 
 		for (EnumPreSetDataProfiles preSetDataProfiles : EnumPreSetDataProfiles.values()) {
 			String preSetDataProfile = preSetDataProfiles.getDataProfile();
-			softAssert.assertEquals(dataProfilesPage.isDataProfileCheckboxExisted(preSetDataProfile), false, dataProfile);
+			softAssert.assertEquals(dataProfilesPage.isDataProfileCheckboxExisted(preSetDataProfile), false,
+					dataProfile);
 		}
+		softAssert.assertAll();
+	}
 
+	@Test
+	public void TC072_DA_DP() {
+		System.out.println(
+				"TC072_DA_DP - Verify user is unable to proceed to next step or finish creating data profile if  \"Name *\" field is left empty");
+
+		// 1 Step Log in Dashboard
+		// 2 Step Navigate to Data Profiles page
+		LoginPage loginPage = new LoginPage(driver);
+		DataProfilesPage dataProfilesPage = loginPage.open()
+				.login(Constant.Username, Constant.Password, Constant.DefaultRepo).goToDataProfilesPage();
+
+		// 3 Step Click on "Add New"
+		dataProfilesPage.lnkAddNew().click();
+
+		// 4 Step Click on "Next Button"
+		dataProfilesPage.btnNext().click();
+
+		// 5 VP Check dialog message "Please input profile name" appears
+		softAssert.assertEquals(dataProfilesPage.getAlertMessage(), Constant.inputDataProfileName);
+		dataProfilesPage.acceptAlertIfAvailable(Constant.ShortTime);
+
+		// 6 4 Step Click on "Finish Button"
+		dataProfilesPage.btnFinish().click();
+
+		// 7 VP Check dialog message "Please input profile name" appears
+		softAssert.assertEquals(dataProfilesPage.getAlertMessage(), Constant.inputDataProfileName);
+
+		softAssert.assertAll();
+	}
+
+	@Test
+	public void TC073_DA_DP() {
+		System.out.println(
+				"TC073_DA_DP - Verify special characters ' /:*?<>|\"#[ ]{}=%; 'is not allowed for input to \"Name *\" field");
+
+		// 1 Step Log in Dashboard
+		// 2 Step Navigate to Data Profiles page
+		LoginPage loginPage = new LoginPage(driver);
+		DataProfilesPage dataProfilesPage = loginPage.open()
+				.login(Constant.Username, Constant.Password, Constant.DefaultRepo).goToDataProfilesPage();
+
+		// 3 Step Click on "Add New"
+		// 4 Step Input special character
+		String specialString = "/<>|\"#[ ]{}=%;";
+		dataProfilesPage.addNewDataProfile(specialString, null, null);
+
+		// 5 VP Check dialog message indicates invalid characters: /:*?<>|"#[ ]{}=%; is
+		// not allowed as input for name field appears
+		softAssert.assertEquals(dataProfilesPage.getAlertMessage(), Constant.inputDPwithSpecialCharacter);
+		softAssert.assertAll();
+	}
+
+	@Test
+	public void TC074_DA_DP() {
+		System.out.println("TC074_DA_DP - Verify Data Profile names are not case sensitive");
+
+		// 1 Step Log in Dashboard
+		// 2 Step Navigate to Data Profiles page
+		LoginPage loginPage = new LoginPage(driver);
+		DataProfilesPage dataProfilesPage = loginPage.open()
+				.login(Constant.Username, Constant.Password, Constant.DefaultRepo).goToDataProfilesPage();
+
+		// Pre-Condition Data profile name "a" is already created
+		dataProfilesPage.addNewDataProfile("a", null, null);
+
+		// 3 Step Click on "Add New"
+		// 4 Step Input charater 'A' into "Name *" field
+		dataProfilesPage.addNewDataProfile("A", null, null);
+
+		// 5 VP Check dialog message indicates invalid characters: /:*?<>|"#[ ]{}=%; is
+		// not allowed as input for name field appears
+		softAssert.assertEquals(dataProfilesPage.getAlertMessage(), Constant.dataProfileNameAlreadyExists);
+		softAssert.assertAll();
+	}
+
+	@Test
+	public void TC075_DA_DP() {
+		System.out.println(
+				"TC075_DA_DP - Verify all data profile types are listed under \"Item Type\" dropped down menu");
+
+		// 1 Step Navigate to Dashboard login page
+		// 2 Step Select a specific repository
+		// 3 Step Enter valid Username and Password
+		// 4 Step Click Login
+		// 5 Step Click Administer->Data Profiles
+		LoginPage loginPage = new LoginPage(driver);
+		DataProfilesPage dataProfilesPage = loginPage.open()
+				.login(Constant.Username, Constant.Password, Constant.DefaultRepo).goToDataProfilesPage();
+
+		// 6 Click 'Add New' link
+		dataProfilesPage.lnkAddNew().click();
+
+		// 7 VP "Check all data profile types are listed under ""Item Type"" dropped
+		// down menu in create profile
+		// page"		
+		for (EnumItemType itemTypes : EnumItemType.values()) {
+			String itemType = itemTypes.getItemType();
+			softAssert.assertEquals(dataProfilesPage.isItemExisted(dataProfilesPage.cmbItemType(), itemType), true, itemType);
+		}
+		softAssert.assertAll();		
 	}
 
 }

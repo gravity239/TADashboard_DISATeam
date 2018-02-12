@@ -69,6 +69,7 @@ public class GeneralPage {
 
 	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
+		wait.until(ExpectedConditions.alertIsPresent());
 	}
 
 	public void enterValue(WebElement element, String value) {
@@ -91,17 +92,17 @@ public class GeneralPage {
 
 	public void acceptAlertIfAvailable(long timeout) {
 		long waitForAlert = System.currentTimeMillis() + timeout;
-		boolean boolFound = false;
+		boolean found = false;
 		do {
 			try {
 				Alert alert = this._driverGeneralPage.switchTo().alert();
 				if (alert != null) {
 					alert.accept();
-					boolFound = true;
+					found = true;
 				}
 			} catch (UnhandledAlertException ex) {
 			}
-		} while ((System.currentTimeMillis() < waitForAlert) && (!boolFound));
+		} while ((System.currentTimeMillis() < waitForAlert) && (!found));
 	}
 
 	// Override FindElement
@@ -157,9 +158,8 @@ public class GeneralPage {
 	}
 
 	// Determine if a item that in a item list exists
-	public boolean isItemExisted(WebElement element, String item) {
-		Select selector = new Select(element);
-		List<WebElement> elements = selector.getOptions();
+	public boolean isItemExisted(Select element, String item) {		
+		List<WebElement> elements = element.getOptions();
 		boolean found = false;
 		for (WebElement ele : elements) {
 			if (item.equals(ele.getText())) {

@@ -31,14 +31,14 @@ public class TC_Login_DataProvider extends TestBase {
 	public Object[][] getDataFromDataprovider() {
 		return new Object[][] { 
 			    { "administrator", "", true, "" },
-				{ "invalid", "invalid", false, "Username or password is invalid" },
-				{ "administrator", "invalid", false, "Username or password is invalid" },
+				{ "invalid", "invalid", false, Constant.invalidUserandPwd },
+				{ "administrator", "invalid", false, Constant.invalidUserandPwd },
 				{ "test", "TEST", true, "" },
-				{ "test", "test", false, "Username or password is invalid" }, 
+				{ "test", "test", false, Constant.invalidUserandPwd }, 
 				{ "TEST", "TEST", true, "" },
 				{ "test1", "test@#", true, "" }, 
 				{ "test@!", "test", true, "" },
-				{ "", "", false,"Please enter username" }
+				{ "", "", false,Constant.inputUserName}
 
 		};
 	}
