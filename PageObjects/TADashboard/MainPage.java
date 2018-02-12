@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import Constant.Constant;
 import DataObject.TAPage;
 
+
 public class MainPage extends GeneralPage {
 	private WebDriver _driverMainPage;
 	private WebDriverWait _driverWaitMainPage;
@@ -177,7 +178,7 @@ public class MainPage extends GeneralPage {
 	}
 
 	// Go to a page.
-	public MainPage GotoPage(String pageLink) {
+	public MainPage gotoPage(String pageLink) {
 		String[] pages = pageLink.split("->");
 		// if (pages.length == 1)
 		// {
@@ -233,7 +234,7 @@ public class MainPage extends GeneralPage {
 
 	// Delete a page.
 	public MainPage deletePage(String pageLink) {
-		GotoPage(pageLink);
+		gotoPage(pageLink);
 		this.selectGeneralSetting("Delete");
 		acceptAlertIfAvailable(Constant.TimeOut);
 		return this;
@@ -241,6 +242,30 @@ public class MainPage extends GeneralPage {
 
 	public void addNewPage(TAPage page) {
 		selectGeneralSetting("Add Page");
+		waitForElementToBeClickable(_driverWaitMainPage, _driverMainPage, getTxtNewPageName(), Constant.TimeOut);
+		enterValue(getTxtNewPageName(), page.getPageName());
+		selectComboboxValue(getCmbParentPage(), page.getPageParent());
+		selectComboboxValue(getCbmNumberOfColumns(),
+				(page.getNumberOfColumn() == 0) ? null : String.valueOf(page.getNumberOfColumn()));
+		selectComboboxValue(getCmbPageDisplayAfter(), page.getPageBefore());
+		if (page.isPublic()) {
+			check(getChbPublic());
+		} else {
+			unCheck(getChbPublic());
+		}
+		getBtnPageOK().click();
+		By lnkPage = By.xpath(String.format(_lnkPage, page.getPageName()).replace(" ", "\u00A0"));
+		if (page.getPageParent() != null) {
+			By lnkParentPage = By.xpath(String.format(_lnkParentPage, page.getPageName()).replace(" ", "\u00A0"));
+			WebElement LnkParentPage = myFindElement(lnkParentPage, Constant.TimeOut);
+			this.mouseTo(LnkParentPage, _driverMainPage);
+		}
+		this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, lnkPage, Constant.TimeOut);
+	}
+
+	public void editPage(String pagePath, TAPage page) {
+		gotoPage(pagePath);
+		selectGeneralSetting("Edit");
 		waitForElementToBeClickable(_driverWaitMainPage, _driverMainPage, getTxtNewPageName(), Constant.TimeOut);
 		enterValue(getTxtNewPageName(), page.getPageName());
 		selectComboboxValue(getCmbParentPage(), page.getPageParent());
