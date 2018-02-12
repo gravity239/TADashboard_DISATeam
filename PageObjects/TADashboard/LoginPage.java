@@ -53,12 +53,5 @@ public class LoginPage extends MainPage {
 		getBtnLogin().click();
 		return new MainPage(_driverLoginPage);
 	}
-
-	// Get the message of the alert dialog.
-	public String getAlertMessage() {
-		this.waitForAlertPresent(_driverWaitLoginPage, _driverLoginPage, Constant.TimeOut);
-		Alert alert = _driverLoginPage.switchTo().alert();
-		return alert.getText();
-	}
-
+	
 }
