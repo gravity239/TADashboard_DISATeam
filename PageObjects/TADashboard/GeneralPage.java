@@ -59,28 +59,24 @@ public class GeneralPage {
 			element.click();
 		}
 	}
-	
-	public void selectComboboxValue(Select sElement, String value)
-    {
-  	  if ((value!= null) && (value!=""))
-  	  {  		  
-  		sElement.selectByVisibleText(value);
-  	  }    	 
-    }
+
+	public void selectComboboxValue(Select sElement, String value) {
+		if ((value != null) && (value != "")) {
+			sElement.selectByVisibleText(value);
+		}
+	}
 
 	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
 	}
-	
-	public void enterValue(WebElement element, String value)
-    {
-  	  if (value!= null)
-  	  {
-  		  element.clear();
-  		  element.sendKeys(value);
-  	  }
-  	      	  
-    }
+
+	public void enterValue(WebElement element, String value) {
+		if (value != null) {
+			element.clear();
+			element.sendKeys(value);
+		}
+
+	}
 
 	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, WebElement ele, long timeOut) {
 		wait = new WebDriverWait(driver, Constant.TimeOut);
@@ -151,28 +147,37 @@ public class GeneralPage {
 	public boolean isElementExisted(By locatorKey) {
 		WebDriverWait wait = new WebDriverWait(_driverGeneralPage, Constant.ShortTime);
 		try {
-			wait.until(ExpectedConditions.visibilityOfElementLocated(locatorKey));	
-			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(locatorKey));
+
 		} catch (Exception e) {
 			return false;
 		}
 		return true;
 	}
-	
-	  //Determine if a item that in a item list exists
-	  public boolean isItemExisted(WebElement element, String item)
-      {
-          Select selector = new Select(element);
-          List<WebElement> elements=selector.getOptions();
-          boolean found=false;
-          for(WebElement ele:elements)
-          {
-              if(item.equals(ele.getText()))
-              {
-                  found=true;
-                  break;
-              }
-          }
-          return found;
-      }	  	
+
+	// Determine if a item that in a item list exists
+	public boolean isItemExisted(WebElement element, String item) {
+		Select selector = new Select(element);
+		List<WebElement> elements = selector.getOptions();
+		boolean found = false;
+		for (WebElement ele : elements) {
+			if (item.equals(ele.getText())) {
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
+
+	public String getTableCellValue(String tableXpath, int row_number, int column_number) {
+		String cellValue = "";
+		String xpathString = tableXpath + "/tr[%d]/td[%d]";
+		WebElement colElement = myFindElement(By.xpath(String.format(xpathString, row_number, column_number)),
+				Constant.ShortTime);
+		if (colElement != null) {
+			cellValue = colElement.getText();
+		}
+
+		return cellValue;
+	}	
 }

@@ -2,6 +2,7 @@ package TADashboard_TestCases;
 
 import org.testng.annotations.Test;
 
+import Common.Utilities;
 import Constant.Constant;
 import Constant.EnumPreSetDataProfiles;
 import TADashboard.DataProfilesPage;
@@ -67,6 +68,53 @@ public class TC_DataProfilesPage extends TestBase {
 
 		}
 		softAssert.assertAll();
+	}
+
+	@Test
+	public void TC070_DA_DP() {
+		System.out.println("TC070_DA_DP - Verify Data Profiles are listed alphabetically");
+
+		// 1 Step Navigate to Dashboard login page
+		// 2 Step Select a specific repository
+		// 3 Step Enter valid Username and Password
+		// 4 Step Click Login
+		// 5 Step Click Administer->Data Profiles
+		LoginPage loginPage = new LoginPage(driver);
+		DataProfilesPage dataProfilesPage = loginPage.open()
+				.login(Constant.Username, Constant.Password, Constant.DefaultRepo).goToDataProfilesPage();
+
+		// 6 VP Check Data Profiles are listed alphabetically
+
+		softAssert.assertEquals(dataProfilesPage.isTableOrderByAscending(2), true);
+		softAssert.assertAll();
+	}
+
+	@Test
+	public void TC071_DA_DP() {
+		System.out.println("TC071_DA_DP - Verify Check Boxes are only present for non-preset Data Profiles.");
+
+		// 1 Step Navigate to Dashboard login page
+		// 2 Step Select a specific repository
+		// 3 Step Enter valid Username and Password
+		// 4 Step Click Login
+		// 5 Step Click Administer->Data Profiles
+		LoginPage loginPage = new LoginPage(driver);
+		DataProfilesPage dataProfilesPage = loginPage.open()
+				.login(Constant.Username, Constant.Password, Constant.DefaultRepo).goToDataProfilesPage();
+
+		// 6 Step Create a new Data Profile
+		// 7 Step Back to Data Profiles page
+		String dataProfile = Utilities.uniquePageName("Data Profile ");
+		dataProfilesPage.addNewDataProfile(dataProfile, null, null);
+
+		// 8 VP Check Check Boxes are only present for non-preset Data Profiles.
+		softAssert.assertEquals(dataProfilesPage.isDataProfileCheckboxExisted(dataProfile), true, dataProfile);
+
+		for (EnumPreSetDataProfiles preSetDataProfiles : EnumPreSetDataProfiles.values()) {
+			String preSetDataProfile = preSetDataProfiles.getDataProfile();
+			softAssert.assertEquals(dataProfilesPage.isDataProfileCheckboxExisted(preSetDataProfile), false, dataProfile);
+		}
+
 	}
 
 }
