@@ -33,7 +33,7 @@ public class DataProfilesPage extends MainPage{
 	private static final By _tabStatisticFields = By.xpath("//li[.='Statistic Fields']");
 	private static final By _tblProfileSettings = By.xpath("//table[@id='profilesettings']/tbody/tr");
 	private static final By _lbFilterList = By.xpath("//select[@id = 'listCondition']");
-	private static final String _dataProfile = "//table/tbody/tr/td[.='%s']/following-sibling::td[.='%s']/following-sibling::td[.='%s']";
+	private static final String _dataProfile = "//table/tbody/tr/td[.='%1$s']/following-sibling::td[.='%2$s']/following-sibling::td[.='%3$s']";
 	
 	public WebElement LnkAddNew()
     {
@@ -108,7 +108,9 @@ public class DataProfilesPage extends MainPage{
     }
     
     public boolean isDataProfileExisted(String dataProfile, String itemType, String relatedData) {
-    	By dataProfileLocator = By.xpath(String.format(_dataProfile, dataProfile, itemType, relatedData).replace(" ", "\u00A0"));    	    	
-    	return isElementExisted(dataProfileLocator);
+    	String locator = (String.format(_dataProfile, dataProfile, itemType, relatedData)).replace(" ", "\u00A0");
+    	By dataProfileLocator = By.xpath(locator);    	    	
+    	boolean isExist = isElementExisted(dataProfileLocator);
+    	return isExist;
     }    
 }

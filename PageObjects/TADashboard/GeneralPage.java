@@ -151,11 +151,12 @@ public class GeneralPage {
 	public boolean isElementExisted(By locatorKey) {
 		WebDriverWait wait = new WebDriverWait(_driverGeneralPage, Constant.ShortTime);
 		try {
-			wait.until(ExpectedConditions.visibilityOfElementLocated(locatorKey));
-			return true;
+			wait.until(ExpectedConditions.visibilityOfElementLocated(locatorKey));	
+			
 		} catch (Exception e) {
 			return false;
 		}
+		return true;
 	}
 	
 	  //Determine if a item that in a item list exists

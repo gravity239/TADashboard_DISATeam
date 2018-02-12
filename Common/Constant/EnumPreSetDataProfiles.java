@@ -17,7 +17,7 @@ public enum EnumPreSetDataProfiles {
     Data013("Test Module Implementation By Priority", "Test Module", ""),
     Data014("Test Module Implementation By Status", "Test Module", ""),
     Data015("Test Module Status per Assigned Users", "Test Module", ""),
-    Data016(" 	Test Objective Execution", "Test Module", "");
+    Data016("Test Objective Executin", "Test Module", "");
 
 	private String dataProfile;
     private String itemType;

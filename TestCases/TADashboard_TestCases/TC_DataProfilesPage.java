@@ -31,6 +31,6 @@ public class TC_DataProfilesPage extends TestBase {
 			String relatedData = preSetDataProfile.getRelatedData();
 			softAssert.assertEquals(dataProfilesPage.isDataProfileExisted(dataProfile, itemType, relatedData), true);
 		}
-
+		softAssert.assertAll();
 	}
 }
