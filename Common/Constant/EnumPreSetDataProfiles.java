@@ -9,15 +9,15 @@ public enum EnumPreSetDataProfiles {
     Data005("Test Case Execution Results", "Test Case", "Related Run Results"),
     Data006("Test Case Execution Trend", "Test Case", "Related Run Results"),
     Data007("Test Module Execution", "Test Module", ""),
-    Data008("Test Module Execution Failure Trend", "Test Module", "Related Run Results"),
-    Data009("Test Module Execution History", "Test Module", "Related Run Results"),
-    Data010("Test Module Execution Results", "Test Module", "Related Run Results"),
-    Data011("Test Module Execution Results Report", "Test Module", "Related Run Results"),
-    Data012("Test Module Execution Trend", "Test Module", "Related Run Results"),
+    Data008("Test Module Execution Failure Trend", "Test Module", "Related Test Results"),
+    Data009("Test Module Execution History", "Test Module", "Related Test Results"),
+    Data010("Test Module Execution Results", "Test Module", "Related Test Results"),
+    Data011("Test Module Execution Results Report", "Test Module", "Related Test Results"),
+    Data012("Test Module Execution Trend", "Test Module", "Related Test Results"),
     Data013("Test Module Implementation By Priority", "Test Module", ""),
     Data014("Test Module Implementation By Status", "Test Module", ""),
     Data015("Test Module Status per Assigned Users", "Test Module", ""),
-    Data016("Test Objective Executin", "Test Module", "");
+    Data016("Test Objective Execution", "Test Objective", "");
 
 	private String dataProfile;
     private String itemType;

@@ -7,17 +7,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import Constant.Constant;
 
+public class DataProfilesPage extends MainPage {
 
-public class DataProfilesPage extends MainPage{
-	
 	private WebDriver _driverDPPage;
 	private WebDriverWait _driverWaitMainPage;
-	
+
 	public DataProfilesPage(WebDriver driver) {
 		super(driver);
 		this._driverDPPage = driver;
 	}
-	
+
 	private static final By _lnkAddNew = By.xpath("//a[.='Add New']");
 	private static final By _txtName = By.xpath("//input[@id='txtProfileName']");
 	private static final By _cmbItemType = By.xpath("//select[@id ='cbbEntityType']");
@@ -33,84 +32,93 @@ public class DataProfilesPage extends MainPage{
 	private static final By _tabStatisticFields = By.xpath("//li[.='Statistic Fields']");
 	private static final By _tblProfileSettings = By.xpath("//table[@id='profilesettings']/tbody/tr");
 	private static final By _lbFilterList = By.xpath("//select[@id = 'listCondition']");
-	private static final String _dataProfile = "//table/tbody/tr/td[.='%1$s']/following-sibling::td[.='%2$s']/following-sibling::td[.='%3$s']";
+	private static final String _dataProfile = "//table/tbody/tr/td[.='%s']/following-sibling::td[.='%2$s']/following-sibling::td[.=\"%3$s\"]";
+	private static final String _dataProfileButton = "//table/tbody/tr/td[.='%s']/following-sibling::td/a[.='%s']";
+	private static final String _dataProfileLink = "//table/tbody/tr/td/a[.='%s']";
+	private static final String _dataProfileCheckbox = "//table/tbody/tr/td[.='%s']/preceding-sibling::td/input[@type='checkbox']";
+
+	public WebElement LnkAddNew() {
+		return myFindElement(_lnkAddNew, Constant.TimeOut);
+	}
+
+	public WebElement TxtName() {
+		return myFindElement(_txtName, Constant.TimeOut);
+	}
+
+	public WebElement CmbItemType() {
+		return myFindElement(_cmbItemType, Constant.TimeOut);
+	}
+
+	public WebElement CmbRelatedData() {
+		return myFindElement(_cmbRelatedData, Constant.TimeOut);
+	}
+
+	public WebElement BtnNext() {
+		return myFindElement(_btnNext, Constant.TimeOut);
+	}
+
+	public WebElement BtnFinish() {
+		return myFindElement(_btnFinish, Constant.TimeOut);
+	}
+
+	public WebElement BtnCancel() {
+		return myFindElement(_btnCancel, Constant.TimeOut);
+	}
+
+	public WebElement LnkDelete() {
+		return myFindElement(_lnkDelete, Constant.TimeOut);
+	}
+
+	public WebElement TabGenenalSettings() {
+		return myFindElement(_tabGenenalSettings, Constant.TimeOut);
+	}
+
+	public WebElement TabDisplayFields() {
+		return myFindElement(_tabDisplayFields, Constant.TimeOut);
+	}
+
+	public WebElement TabSortFields() {
+		return myFindElement(_tabSortFields, Constant.TimeOut);
+	}
+
+	public WebElement TabFilterFields() {
+		return myFindElement(_tabFilterFields, Constant.TimeOut);
+	}
+
+	public WebElement TabStatisticFields() {
+		return myFindElement(_tabStatisticFields, Constant.TimeOut);
+	}
+
+	public WebElement TblProfileSettings() {
+		return myFindElement(_tblProfileSettings, Constant.TimeOut);
+	}
+
+	public WebElement LbFilterList() {
+		return myFindElement(_lbFilterList, Constant.TimeOut);
+	}
+
+	public boolean isDataProfileExisted(String dataProfile, String itemType, String relatedData) {
+		String locator = String.format(_dataProfile, dataProfile, itemType, relatedData).replace(" ", "\u00A0");
+		By dataProfileLocator = By.xpath(locator);
+		return isElementExisted(dataProfileLocator);
+	}
+
+	public boolean isDataProfileLinkExisted(String dataProfile) {
+		String locator = String.format(_dataProfileLink, dataProfile).replace(" ", "\u00A0");
+		By dataProfileLocator = By.xpath(locator);
+		return isElementExisted(dataProfileLocator);
+	}
+
+	public boolean isDataProfileButtonExisted(String dataProfile, String button) {
+		String locator = String.format(_dataProfileButton, dataProfile, button).replace(" ", "\u00A0");
+		By dataProfileLocator = By.xpath(locator);
+		return isElementExisted(dataProfileLocator);
+	}
 	
-	public WebElement LnkAddNew()
-    {
-        return myFindElement(_lnkAddNew, Constant.TimeOut);
-    }
+	public boolean isDataProfileCheckboxExisted(String dataProfile) {
+		String locator = String.format(_dataProfileCheckbox, dataProfile).replace(" ", "\u00A0");
+		By dataProfileLocator = By.xpath(locator);
+		return isElementExisted(dataProfileLocator);
+	}
 
-    public WebElement TxtName()
-    {
-        return myFindElement(_txtName, Constant.TimeOut);
-    }
-
-    public WebElement CmbItemType()
-    {
-        return myFindElement(_cmbItemType, Constant.TimeOut);
-    }
-
-    public WebElement CmbRelatedData()
-    {
-        return myFindElement(_cmbRelatedData, Constant.TimeOut); 
-    }
-
-    public WebElement BtnNext()
-    {
-          return myFindElement(_btnNext, Constant.TimeOut);
-    }
-
-    public WebElement BtnFinish()
-    {
-          return myFindElement(_btnFinish, Constant.TimeOut);
-    }
-
-    public WebElement BtnCancel()
-    {
-          return myFindElement(_btnCancel, Constant.TimeOut);
-    }
-
-    public WebElement LnkDelete()
-    {
-          return myFindElement(_lnkDelete, Constant.TimeOut);
-    }
-
-    public WebElement TabGenenalSettings()
-    {
-          return myFindElement(_tabGenenalSettings, Constant.TimeOut);
-    }
-    public WebElement TabDisplayFields()
-    {
-          return myFindElement(_tabDisplayFields, Constant.TimeOut);
-    }
-    public WebElement TabSortFields()
-    {
-          return myFindElement(_tabSortFields, Constant.TimeOut);
-    }
-    public WebElement TabFilterFields()
-    {
-          return myFindElement(_tabFilterFields, Constant.TimeOut);
-    }
-
-    public WebElement TabStatisticFields()
-    {
-          return myFindElement(_tabStatisticFields, Constant.TimeOut);
-    }
-
-    public WebElement TblProfileSettings()
-    {
-          return myFindElement(_tblProfileSettings, Constant.TimeOut);
-    }
-
-    public WebElement LbFilterList()
-    {
-          return myFindElement(_lbFilterList, Constant.TimeOut);
-    }
-    
-    public boolean isDataProfileExisted(String dataProfile, String itemType, String relatedData) {
-    	String locator = (String.format(_dataProfile, dataProfile, itemType, relatedData)).replace(" ", "\u00A0");
-    	By dataProfileLocator = By.xpath(locator);    	    	
-    	boolean isExist = isElementExisted(dataProfileLocator);
-    	return isExist;
-    }    
 }
