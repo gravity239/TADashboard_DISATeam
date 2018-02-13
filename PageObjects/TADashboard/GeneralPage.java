@@ -187,4 +187,17 @@ public class GeneralPage {
 			Alert alert = _driverGeneralPage.switchTo().alert();
 			return alert.getText();
 		}
+	 
+	 public int getItemIndexInCombobox(Select element, String value) {
+		 List<WebElement> elements = element.getOptions();
+			int found = -1;
+			for (WebElement ele : elements) {
+				if (value.equals(ele.getText())) {
+					found = elements.indexOf(ele);
+					break;
+				}
+			}		
+		 return found;
+	 }	
 }
+

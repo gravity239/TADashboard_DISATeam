@@ -220,5 +220,7 @@ public class TC_DataProfilesPage extends TestBase {
 		}
 		softAssert.assertAll();		
 	}
+	
+	
 
 }
