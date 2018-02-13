@@ -1,17 +1,17 @@
 package TADashboard;
 
 import org.openqa.selenium.WebDriver;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import Constant.Constant;
+import Constant.EnumItemType;
 
 public class DataProfilesPage extends MainPage {
 
 	private WebDriver _driverDPPage;
-	private WebDriverWait _driverWaitMainPage;
 
 	public DataProfilesPage(WebDriver driver) {
 		super(driver);
@@ -20,7 +20,7 @@ public class DataProfilesPage extends MainPage {
 
 	private static final By _lnkAddNew = By.xpath("//a[.='Add New']");
 	private static final By _txtName = By.xpath("//input[@id='txtProfileName']");
-	private static final By _cmbItemType = By.xpath("//select[@id ='cbbEntityType']");
+	private static final By _cmbItemType = By.xpath("//select[@id='cbbEntityType']");
 	private static final By _cmbRelatedData = By.xpath("//select[@id ='cbbSubReport']");
 	private static final By _btnNext = By.xpath("//input[@value='Next']");
 	private static final By _btnFinish = By.xpath("//input[@value='Finish']");
@@ -32,7 +32,9 @@ public class DataProfilesPage extends MainPage {
 	private static final By _tabFilterFields = By.xpath("//li[.='Filter Fields']");
 	private static final By _tabStatisticFields = By.xpath("//li[.='Statistic Fields']");
 	private static final By _tblProfileSettings = By.xpath("//table[@id='profilesettings']/tbody/tr");
-	private static final By _lbFilterList = By.xpath("//select[@id = 'listCondition']");
+	private static final By _lbFilterList = By.xpath("//select[@id='listCondition']");
+	private static final By _lnkUnCheckAll = By.xpath("//a[.='UnCheck All' or .='Uncheck All']");
+	private static final By _lnkCheckAll = By.xpath("//a[.='Check All']");
 	private static final String _tabDataProfiles = "//table[@class='GridView']/tbody/";
 	private static final String _dataProfile = "//table/tbody/tr/td[.='%s']/following-sibling::td[.='%2$s']/following-sibling::td[.=\"%3$s\"]";
 	private static final String _dataProfileButton = "//table/tbody/tr/td[.='%s']/following-sibling::td/a[.='%s']";
@@ -95,8 +97,16 @@ public class DataProfilesPage extends MainPage {
 		return myFindElement(_tblProfileSettings, Constant.ShortTime);
 	}
 
-	public WebElement lbFilterList() {
-		return myFindElement(_lbFilterList, Constant.ShortTime);
+	public Select lbFilterList() {
+		return new Select(myFindElement(_lbFilterList, Constant.ShortTime));
+	}
+
+	public WebElement lnkCheckAll() {
+		return myFindElement(_lnkCheckAll, Constant.ShortTime);
+	}
+
+	public WebElement lnkUnCheckAll() {
+		return myFindElement(_lnkUnCheckAll, Constant.ShortTime);
 	}
 
 	public boolean isDataProfileExisted(String dataProfile, String itemType, String relatedData) {
@@ -126,10 +136,10 @@ public class DataProfilesPage extends MainPage {
 	public boolean isTableOrderByAscending(int colum_number) {
 		int startRow = 2;
 		String cellValue = getTableCellValue(_tabDataProfiles, startRow, colum_number);
-		String cellValueAfter = getTableCellValue(_tabDataProfiles, startRow + 1, colum_number);	
+		String cellValueAfter = getTableCellValue(_tabDataProfiles, startRow + 1, colum_number);
 
 		while (cellValueAfter != "") {
-			if (cellValue.compareTo(cellValueAfter)>0) {
+			if (cellValue.compareTo(cellValueAfter) > 0) {
 				return false;
 			} else {
 				startRow = startRow + 1;
@@ -139,7 +149,17 @@ public class DataProfilesPage extends MainPage {
 		}
 		return true;
 	}
-	
+
+	public boolean isItemTypeOrderByPriority() {
+		for (EnumItemType itemTypes : EnumItemType.values()) {
+			String itemType = itemTypes.getItemType();
+			if (getItemIndexInCombobox(cmbItemType(), itemType) != itemTypes.getItemTypePriority()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public void addNewDataProfile(String dataProfileName, String itemType, String relatedData) {
 		lnkAddNew().click();
 		enterValue(txtName(), dataProfileName);
@@ -147,6 +167,50 @@ public class DataProfilesPage extends MainPage {
 		selectComboboxValue(cmbRelatedData(), relatedData);
 		btnFinish().click();
 	}
-	
-	
+
+	public int getNumberOfItemInListBox(Select element) {
+		return element.getOptions().size();
+	}
+
+	public void clickOnDataProfileLink(String dataProfile) {
+		String locator = String.format(_dataProfileLink, dataProfile).replace(" ", "\u00A0");
+		By dataProfileLocator = By.xpath(locator);
+		myFindElement(dataProfileLocator, Constant.ShortTime).click();
+	}
+
+	public boolean checkDataProfileGeneralSetting(String dataProfile, String itemType, String relatedData) {
+
+		String iDataProfile = txtName().getAttribute("value");
+		String iItemType = cmbItemType().getFirstSelectedOption().getText();
+		String iRelatedData = cmbRelatedData().getFirstSelectedOption().getText();
+		if (dataProfile != null) {
+			if (dataProfile.equals(iDataProfile) != true) {
+				return false;
+			}
+		}
+		if (itemType != null) {
+			if (itemType.equals(iItemType) != true) {
+				return false;
+			}
+		}
+		if (relatedData != null) {
+			if (relatedData.equals(iRelatedData) != true) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void deleteAllDataProfiles() {
+		if (isAlertPresent()) {
+			acceptAlertIfAvailable(Constant.ShortTime);
+		}
+		goToDataProfilesPage();
+		if (lnkCheckAll() != null) {
+			lnkCheckAll().click();
+			lnkDelete().click();
+			acceptAlertIfAvailable(Constant.ShortTime);
+		}
+	}
+
 }

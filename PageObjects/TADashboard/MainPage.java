@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import Constant.Constant;
 import DataObject.TAPage;
 
-
 public class MainPage extends GeneralPage {
 	private WebDriver _driverMainPage;
 	private WebDriverWait _driverWaitMainPage;
@@ -32,7 +31,7 @@ public class MainPage extends GeneralPage {
 			.xpath("//div[@id='div_popup']//input[contains(@onclick,'closeWindow')]");
 	private static final By _dlgPopupHeader = By.xpath("//div[@id='div_popup']//td[@class='ptc']/h2");
 	private static final By _lnkDeletePage = By.xpath("//li[@class='mn-setting']//a[ .='Delete']");
-	
+
 	public WebElement getLnkAccount() {
 		return myFindElement(_lnkAccount, Constant.TimeOut);
 	}
@@ -85,8 +84,6 @@ public class MainPage extends GeneralPage {
 		return myFindElement(_lnkDeletePage, Constant.TimeOut);
 	}
 
-	
-	
 	public MainPage(WebDriver driver) {
 		super(driver);
 		this._driverMainPage = driver;
@@ -187,30 +184,6 @@ public class MainPage extends GeneralPage {
 	// Go to a page.
 	public MainPage gotoPage(String pageLink) {
 		String[] pages = pageLink.split("->");
-		// if (pages.length == 1)
-		// {
-		// By page = By.xpath("//a[.='" + pages[0].replace(" ", "\u00A0") + "']");
-		// WebElement LnkPage = myFindElement(page, Constant.TimeOut);
-		// LnkPage.click();
-		// }
-		// else
-		// {
-		// int pageIndex = 0;
-		// while (pageIndex + 1 < pages.length)
-		// {
-		// By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") +
-		// "']");
-		// WebElement LnkParent = myFindElement(page, Constant.TimeOut);
-		// Utilities.mouseTo(LnkParent, _driverMainPage);
-		// pageIndex = pageIndex + 1;
-		// page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
-		// WebElement LnkPage = myFindElement(page, Constant.TimeOut);
-		// if (pageIndex + 1 == pages.length)
-		// {
-		// LnkPage.click();
-		// }
-		// }
-		// }
 		isPageExisted(pageLink);
 		By page = By.xpath("//a[.='" + pages[pages.length - 1].replace(" ", "\u00A0") + "']");
 		WebElement LnkPage = myFindElement(page, Constant.TimeOut);

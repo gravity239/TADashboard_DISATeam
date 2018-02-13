@@ -63,7 +63,7 @@ public class GeneralPage {
 
 	public void selectComboboxValue(Select sElement, String value) {
 		if ((value != null) && (value != "")) {
-			sElement.selectByVisibleText(value);
+			sElement.selectByVisibleText(value.toString());
 		}
 	}
 
@@ -158,7 +158,7 @@ public class GeneralPage {
 	}
 
 	// Determine if a item that in a item list exists
-	public boolean isItemExisted(Select element, String item) {		
+	public boolean isItemExisted(Select element, String item) {
 		List<WebElement> elements = element.getOptions();
 		boolean found = false;
 		for (WebElement ele : elements) {
@@ -180,24 +180,45 @@ public class GeneralPage {
 		}
 
 		return cellValue;
-	}	
-	
-	 public String getAlertMessage() {
-			this.waitForAlertPresent(_driverWaitGeneralPage, _driverGeneralPage, Constant.TimeOut);
-			Alert alert = _driverGeneralPage.switchTo().alert();
-			return alert.getText();
-		}
-	 
-	 public int getItemIndexInCombobox(Select element, String value) {
-		 List<WebElement> elements = element.getOptions();
-			int found = -1;
-			for (WebElement ele : elements) {
-				if (value.equals(ele.getText())) {
-					found = elements.indexOf(ele);
-					break;
-				}
-			}		
-		 return found;
-	 }	
-}
+	}
 
+	public String getAlertMessage() {
+		this.waitForAlertPresent(_driverWaitGeneralPage, _driverGeneralPage, Constant.TimeOut);
+		Alert alert = _driverGeneralPage.switchTo().alert();
+		return alert.getText();
+	}
+
+	public int getItemIndexInCombobox(Select element, String value) {
+		List<WebElement> elements = element.getOptions();
+		int found = -1;
+		for (WebElement ele : elements) {
+			if (value.equals(ele.getText())) {
+				found = elements.indexOf(ele);
+				break;
+			}
+		}
+		return found;
+	}
+
+	public boolean areAllCheckBoxesUnChecked() {
+		List<WebElement> checkBoxs = _driverGeneralPage.findElements(By.xpath("//input[@class = 'box']"));
+
+		for (WebElement ele : checkBoxs) {
+			if (ele.isSelected()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean areAllCheckBoxesChecked() {
+		List<WebElement> checkBoxs = _driverGeneralPage.findElements(By.xpath("//input[@class = 'box']"));
+
+		for (WebElement ele : checkBoxs) {
+			if (ele.isSelected() == false) {
+				return false;
+			}
+		}
+		return true;
+	}
+}

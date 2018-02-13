@@ -12,7 +12,7 @@ import Constant.Constant;
 
 public class PanelPage extends MainPage {
 	private WebDriver _driverPanelPage;
-	private	WebDriverWait _driveWaitPanelPage;
+	private WebDriverWait _driveWaitPanelPage;
 	private static final By _tabDisplaySetting = By.xpath("//a[@href='#tabs-displaySettings']");
 	private static final By _tabFilter = By.xpath("//a[@href='#tabs-data']");
 	private static final By _rbChart = By.xpath("//label[contains(.,'Chart')]/input[contains(@id,'radPanelType')]");
@@ -121,8 +121,7 @@ public class PanelPage extends MainPage {
 		return new Select(myFindElement(_cmbCategory, Constant.TimeOut));
 	}
 
-	public WebElement getTxtCaptionNextToCategory()
-	{
+	public WebElement getTxtCaptionNextToCategory() {
 		return myFindElement(_txtCaptionNextToCategory, Constant.TimeOut);
 	}
 
@@ -241,94 +240,81 @@ public class PanelPage extends MainPage {
 	public WebElement getBtnSelectFolder() {
 		return myFindElement(_btnSelectFolder, Constant.TimeOut);
 	}
-	
+
 	public PanelPage(WebDriver driver) {
 		super(driver);
 		this._driverPanelPage = driver;
 	}
-	
-    /// Determines if a profile exists
-    public boolean isProfileExisted(String profileName)
-    {
-        return this.isItemExisted(getCmbDataProfile(),profileName);
-    }
 
-    // Determines if a panel is created.
-    public boolean isPanelCreated(String panelName)
-    {
-        By panel = By.xpath("//a[.='" + panelName + "']");
-        return this.isElementExisted(panel);
-    }
+	/// Determines if a profile exists
+	public boolean isProfileExisted(String profileName) {
+		return this.isItemExisted(getCmbDataProfile(), profileName);
+	}
 
-    // Get header of the setting
-    public String getSettingHeader()
-    {
-        return getLblSettingHeader().getText();
-    }
-    
-    // Wait for adding panel.
-    public PanelPage waitForAddingPanel(String panelName)
-    {
-        By panel = By.xpath("//a[.='" + panelName + "']");
-        this.isElementExisted(panel);
-        this.isElementExisted(_lnkAddNew);
-        return this;
-    }
+	// Determines if a panel is created.
+	public boolean isPanelCreated(String panelName) {
+		By panel = By.xpath("//a[.='" + panelName + "']");
+		return this.isElementExisted(panel);
+	}
 
-    // Click Edit Panel link
-    public void clickEditPanel(String panelName)
-    {
-        By xpath = By.xpath("//a[.='" + panelName + "']/ancestor::tr//a[.='Edit']");
-        myFindElement(xpath,Constant.TimeOut).click();
-        this.isElementExisted(_txtDisplayName);        
-    }
+	// Get header of the setting
+	public String getSettingHeader() {
+		return getLblSettingHeader().getText();
+	}
 
-    //Click Delete Panel link
-    public void clickDeletePanel(String panelName)
-    {
-        By xpath = By.xpath("//a[.='" + panelName + "']/ancestor::tr//a[.='Delete']");
-        myFindElement(xpath,Constant.TimeOut).click();
-        this.waitForAlertPresent(_driveWaitPanelPage, _driverPanelPage,Constant.TimeOut);
-    }
+	// Wait for adding panel.
+	public PanelPage waitForAddingPanel(String panelName) {
+		By panel = By.xpath("//a[.='" + panelName + "']");
+		this.isElementExisted(panel);
+		this.isElementExisted(_lnkAddNew);
+		return this;
+	}
 
-    // Delete a panel
-    public PanelPage deletePanel(String panelName)
-    {        
-        this.selectMenuItem("Administer", "Panels");
-        clickDeletePanel(panelName);
-        this.acceptAlertIfAvailable(Constant.TimeOut);
-        return this;
-    }
+	// Click Edit Panel link
+	public void clickEditPanel(String panelName) {
+		By xpath = By.xpath("//a[.='" + panelName + "']/ancestor::tr//a[.='Edit']");
+		myFindElement(xpath, Constant.TimeOut).click();
+		this.isElementExisted(_txtDisplayName);
+	}
 
-    // Return the type of Panel.
-    public String getTypeOfPanel()
-    {
-        String typeOfPanel = "";
-        if (getLblPanelDialog().getText().equals("Add New Panel"))
-        {
-            List<WebElement> radioButtonGroup = _driverPanelPage.findElements(By.xpath(_panelTypeInAddNewDialog));
-            for (WebElement radioButton: radioButtonGroup)
-            {
-                if (radioButton.isSelected() == true)
-                {
-                    String index = radioButton.getAttribute("value");
-                    if (index == "1")
-                        typeOfPanel = "Chart";
-                    else if (index == "2")
-                        typeOfPanel = "Indicator";
-                    else if (index == "3")
-                        typeOfPanel = "Report";
-                    else if (index == "4")
-                        typeOfPanel = "Heat Map";
-                }
-            }
-        }
-        else
-        {
-            WebElement LabelPanelType = myFindElement(By.xpath(_panelTypeInEditDialog),Constant.TimeOut);
-            typeOfPanel = LabelPanelType.getText();
-        }
-        return typeOfPanel;
-    }
+	// Click Delete Panel link
+	public void clickDeletePanel(String panelName) {
+		By xpath = By.xpath("//a[.='" + panelName + "']/ancestor::tr//a[.='Delete']");
+		myFindElement(xpath, Constant.TimeOut).click();
+		this.waitForAlertPresent(_driveWaitPanelPage, _driverPanelPage, Constant.TimeOut);
+	}
+
+	// Delete a panel
+	public PanelPage deletePanel(String panelName) {
+		this.selectMenuItem("Administer", "Panels");
+		clickDeletePanel(panelName);
+		this.acceptAlertIfAvailable(Constant.TimeOut);
+		return this;
+	}
+
+	// Return the type of Panel.
+	public String getTypeOfPanel() {
+		String typeOfPanel = "";
+		if (getLblPanelDialog().getText().equals("Add New Panel")) {
+			List<WebElement> radioButtonGroup = _driverPanelPage.findElements(By.xpath(_panelTypeInAddNewDialog));
+			for (WebElement radioButton : radioButtonGroup) {
+				if (radioButton.isSelected() == true) {
+					String index = radioButton.getAttribute("value");
+					if (index == "1")
+						typeOfPanel = "Chart";
+					else if (index == "2")
+						typeOfPanel = "Indicator";
+					else if (index == "3")
+						typeOfPanel = "Report";
+					else if (index == "4")
+						typeOfPanel = "Heat Map";
+				}
+			}
+		} else {
+			WebElement LabelPanelType = myFindElement(By.xpath(_panelTypeInEditDialog), Constant.TimeOut);
+			typeOfPanel = LabelPanelType.getText();
+		}
+		return typeOfPanel;
+	}
 
 }

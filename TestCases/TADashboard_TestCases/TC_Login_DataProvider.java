@@ -23,8 +23,7 @@ public class TC_Login_DataProvider extends TestBase {
 		} else {
 			    String actualMessage = loginPage.getAlertMessage();
 				Assert.assertEquals(actualMessage,message );
-			}
-		
+			}		
 	}
 
 	@DataProvider(name = "LoginCredentials")
@@ -43,4 +42,3 @@ public class TC_Login_DataProvider extends TestBase {
 		};
 	}
 }
-
