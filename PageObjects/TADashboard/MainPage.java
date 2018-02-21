@@ -31,7 +31,8 @@ public class MainPage extends GeneralPage {
 			.xpath("//div[@id='div_popup']//input[contains(@onclick,'closeWindow')]");
 	private static final By _dlgPopupHeader = By.xpath("//div[@id='div_popup']//td[@class='ptc']/h2");
 	private static final By _lnkDeletePage = By.xpath("//li[@class='mn-setting']//a[ .='Delete']");
-
+	private static final By _btnChoosePanels = By.xpath("//a[@id='btnChoosepanel']");
+	
 	public WebElement getLnkAccount() {
 		return myFindElement(_lnkAccount, Constant.TimeOut);
 	}
@@ -82,6 +83,10 @@ public class MainPage extends GeneralPage {
 
 	public WebElement _lnkDeletePage() {
 		return myFindElement(_lnkDeletePage, Constant.TimeOut);
+	}
+	
+	public WebElement getBtnChoosePanels() {
+		return myFindElement(_btnChoosePanels, Constant.TimeOut);
 	}
 
 	public MainPage(WebDriver driver) {
@@ -279,4 +284,25 @@ public class MainPage extends GeneralPage {
 		selectMenuItem("Administer", "Data Profiles");
 		return new DataProfilesPage(_driverMainPage);
 	}
+	
+	   public void unhideChoosePanelsPage()
+       {
+           String statusOfChoosePanelsButton = getBtnChoosePanels().getAttribute("class");
+           if(statusOfChoosePanelsButton != "selected")
+           {
+               getBtnChoosePanels().click();
+           }
+           this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath("//div[@class='ccpanels' AND @style='display: block;']//div[@class='phead' AND .='Choose panels']"), Constant.TimeOut);
+       }
+
+       // Hide Choose Panels page.
+       public void hideChoosePanelsPage()
+       {
+           String statusOfChoosePanelsButton = getBtnChoosePanels().getAttribute("class");
+           if (statusOfChoosePanelsButton == "selected")
+           {
+        	   getBtnChoosePanels().click();
+           }
+           this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath("//div[@class='ccpanels' AND @style='display: none;']//div[@class='phead' AND .='Choose panels']"), Constant.TimeOut);
+       }
 }
