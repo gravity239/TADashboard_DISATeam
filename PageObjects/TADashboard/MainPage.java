@@ -190,7 +190,8 @@ public class MainPage extends GeneralPage {
 	public MainPage gotoPage(String pageLink) {
 		String[] pages = pageLink.split("->");
 		isPageExisted(pageLink);
-		By page = By.xpath("//a[.='" + pages[pages.length - 1].replace(" ", "\u00A0") + "']");
+		int pageIndex = pages.length - 1;
+		By page = By.xpath("//a[.='" + pages[pageIndex].replace(" ", "\u00A0") + "']");
 		WebElement LnkPage = myFindElement(page, Constant.TimeOut);
 		LnkPage.click();
 		return this;
@@ -292,7 +293,7 @@ public class MainPage extends GeneralPage {
            {
                getBtnChoosePanels().click();
            }
-           this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath("//div[@class='ccpanels' AND @style='display: block;']//div[@class='phead' AND .='Choose panels']"), Constant.TimeOut);
+           //this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath("//div[@class='phead' AND .='Choose panels']/parent::div/parent::div[@style='display: block;']"), Constant.TimeOut);
        }
 
        // Hide Choose Panels page.
@@ -303,6 +304,6 @@ public class MainPage extends GeneralPage {
            {
         	   getBtnChoosePanels().click();
            }
-           this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath("//div[@class='ccpanels' AND @style='display: none;']//div[@class='phead' AND .='Choose panels']"), Constant.TimeOut);
+           //this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath("\"//div[@class='phead' AND .='Choose panels']/parent::div/parent::div[@style='display: none;']"), Constant.TimeOut);
        }
 }

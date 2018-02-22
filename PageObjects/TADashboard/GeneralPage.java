@@ -181,6 +181,18 @@ public class GeneralPage {
 
 		return cellValue;
 	}
+	
+	public int getTableRowCount(String tableXpath) {
+		String xpathString = tableXpath + "/tr";
+		List<WebElement> listOfRows = _driverGeneralPage.findElements(By.xpath(xpathString));
+		return listOfRows.size();
+	}
+	
+	public int getTableColumnCountByRow(String tableXpath,int row_number) {
+		String xpathString = tableXpath + "/tr[%d]/td";
+		List<WebElement> listOfColumns = _driverGeneralPage.findElements(By.xpath(String.format(xpathString,row_number)));
+		return listOfColumns.size();
+	}
 
 	public String getAlertMessage() {
 		this.waitForAlertPresent(_driverWaitGeneralPage, _driverGeneralPage, Constant.TimeOut);

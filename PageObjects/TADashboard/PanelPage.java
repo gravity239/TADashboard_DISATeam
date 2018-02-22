@@ -64,6 +64,8 @@ public class PanelPage extends MainPage {
 	private static final By _btnOk = By
 			.xpath("//div[@class='ui-dialog editpanelDlg' and contains(@style,'display: block')]//input[@id='OK']");
 	private static final By _btnSelectFolder = By.xpath("//a[contains(@href,'treeFolder')]");
+	private static final String _lnkPanelByTypeAndName = "//div[.='%s']/following-sibling::table/tbody/tr/td/ul/li/a[.='%s']";
+	private static final String _tblPanel = "//div[.='%s']/following-sibling::table/tbody/";
 
 	public WebElement getTabDisplaySetting() {
 		return myFindElement(_tabDisplaySetting, Constant.TimeOut);
@@ -315,6 +317,34 @@ public class PanelPage extends MainPage {
 			typeOfPanel = LabelPanelType.getText();
 		}
 		return typeOfPanel;
+	}
+
+	public boolean isPresetPanelExisted(String panelType, String panelDataProfile) {
+		String locator = String.format(_lnkPanelByTypeAndName, panelType, panelDataProfile);
+		By dataProfileLocator = By.xpath(locator);
+		return isElementExisted(dataProfileLocator);
+	}
+
+	public boolean isPanelSortedCorrectly(String panelType) {
+		int rowCount = getTableRowCount(String.format(_tblPanel, panelType));
+		int startRow = 1;
+		for (int startColumn = 1; startColumn + 1 <= getTableColumnCountByRow(String.format(_tblPanel, panelType),
+				startRow); startColumn++) {
+			String cellValue = getTableCellValue(String.format(_tblPanel, panelType), startRow, startColumn);
+			String cellValueAfter = getTableCellValue(String.format(_tblPanel, panelType), startRow, startColumn + 1);
+			if (!cellValueAfter.equals("") && cellValue.toUpperCase().compareTo(cellValueAfter.toUpperCase()) > 0) {
+				return false;
+			}
+			if (startColumn+1 == getTableColumnCountByRow(String.format(_tblPanel, panelType), startRow)) {
+				startRow = startRow + 1;
+				if (startRow > rowCount) {
+					break;
+				}
+				startColumn = 0;
+			}
+		}
+		return true;
+
 	}
 
 }
