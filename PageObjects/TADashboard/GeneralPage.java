@@ -1,5 +1,6 @@
 package TADashboard;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
@@ -233,4 +234,84 @@ public class GeneralPage {
 		}
 		return true;
 	}
-}
+	
+	  public boolean isItemPresentInCombobox(String comboboxName, String comboboxItem,String attribute)
+      {
+          boolean isItemPresent = false;
+          for (WebElement item : _driverGeneralPage.findElements(By.xpath(String.format("//td[contains(text(), %s)]/following-sibling::*/descendant::select" + "/descendant::*",comboboxName))))
+          {
+              if (attribute == "value")
+              {
+                  if (item.getAttribute("value") == comboboxItem)
+                  {
+                      isItemPresent = true;
+                  }
+              }
+              else if(attribute == "text")
+              {
+                  if (item.getText().trim() == comboboxItem)
+                  {
+                      isItemPresent = true;
+                  }
+              }
+          }
+          return isItemPresent;
+      }
+	  
+	  public int getNumberOfItemsInCombobox(String comboboxName)
+      {
+          WebElement combo = myFindElement(By.xpath(String.format("//td[contains(text(), %s)]/following-sibling::*/descendant::select", comboboxName)),Constant.TimeOut);
+          Select se = new Select(combo);
+          List<WebElement> listbox = se.getOptions();
+          return listbox.size();
+      }
+	  
+	  public String getSelectedItemOfCombobox(String comboboxName)
+      {
+          WebElement combo = myFindElement(By.xpath(String.format("//td[contains(text(), %s)]/following-sibling::*/descendant::select", comboboxName)),Constant.TimeOut);
+          Select se = new Select(combo);
+          String selectedItem = se.getFirstSelectedOption().getText().trim();
+          return selectedItem;
+      }
+	  
+	  public int getItemPositionInCombobox(String comboboxName, String comboboxItem)
+      {
+           int itemPosition = -1;
+           if (isItemPresentInCombobox(comboboxName, comboboxItem, "value") == false && isItemPresentInCombobox(comboboxName, comboboxItem, "text") == false)
+               return -1;
+           else
+           {
+               for (WebElement item : _driverGeneralPage.findElements(By.xpath(String.format("//td[contains(text(), %s)]/following-sibling::*/descendant::select" + "/descendant::*", comboboxName))))
+               {
+                   if (item.getAttribute("value") == comboboxItem || item.getText().trim() == comboboxItem)
+                       itemPosition = Integer.parseInt(item.getAttribute("index"));
+               }
+           }
+           return itemPosition;
+      } 
+	  
+	  
+	  public boolean isItemSortedI(Select selector)
+	  {
+		  ArrayList<String> listValues = new ArrayList<String>();
+		  List<WebElement> items = selector.getOptions();
+		    for (WebElement item : items)
+		    {
+		    	listValues.add(item.getText());
+		    }
+		  String last = listValues.get(0);
+		    for (int i = 1; i < listValues.size(); i++)
+		    {
+		        String current = listValues.get(i);
+		        if (last.compareToIgnoreCase(current) > 0)
+		        {
+		            return false;
+		        }
+
+		        last = current;
+		    }
+
+		    return true;
+	  }
+
+  }
