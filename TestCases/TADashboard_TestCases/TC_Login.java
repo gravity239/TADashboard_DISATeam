@@ -1,9 +1,6 @@
 package TADashboard_TestCases;
 
-
-import java.util.concurrent.TimeUnit;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import Constant.Constant;
 import TADashboard.LoginPage;
@@ -66,13 +63,12 @@ public class TC_Login extends TestBase {
 		// VP: Verify that TA Dashboard Mainpage appear
 		Assert.assertEquals(homePage.isDashboardDisplayed(), true, "Dashboard Mainpage is not displayed!");
 		homePage.logout();
-		
-		loginPage.login(Constant.OtherUsername, Constant.OtherPassword.toLowerCase(), Constant.DefaultRepo);
-		Assert.assertEquals(loginPage.getAlertMessage(),"Username or password is invalid");
 
-		
+		loginPage.login(Constant.OtherUsername, Constant.OtherPassword.toLowerCase(), Constant.DefaultRepo);
+		Assert.assertEquals(loginPage.getAlertMessage(), "Username or password is invalid");
+
 	}
-	
+
 	@Test
 	public void TC010_DA_LOGIN() {
 
@@ -83,18 +79,18 @@ public class TC_Login extends TestBase {
 		// 4. Login with the above account but enter password is lower case
 		LoginPage loginPage = new LoginPage(driver);
 		loginPage.open();
-		MainPage homePage = loginPage.login(Constant.OtherUsername.toUpperCase(), Constant.OtherPassword, Constant.DefaultRepo);
+		MainPage homePage = loginPage.login(Constant.OtherUsername.toUpperCase(), Constant.OtherPassword,
+				Constant.DefaultRepo);
 
 		// VP: Verify that TA Dashboard Mainpage appear
 		Assert.assertEquals(homePage.isDashboardDisplayed(), true, "Dashboard Mainpage is not displayed!");
 		homePage.logout();
-		
+
 		loginPage.login(Constant.OtherUsername.toLowerCase(), Constant.OtherPassword, Constant.DefaultRepo);
 		Assert.assertEquals(homePage.isDashboardDisplayed(), true, "Dashboard Mainpage is not displayed!");
 
-		
 	}
-	
+
 	@Test
 	public void TC011_DA_LOGIN() {
 
@@ -128,7 +124,7 @@ public class TC_Login extends TestBase {
 		Assert.assertEquals(actualResult, true, "Dashboard Mainpage is not displayed!");
 
 	}
-	
+
 	@Test
 	public void TC003_DA_LOGIN() {
 		System.out.println(
@@ -181,5 +177,5 @@ public class TC_Login extends TestBase {
 		boolean actualResult = mainPage.isDashboardLockedByDialog();
 		Assert.assertEquals(true, actualResult, "Dashboard is not locked by dialog!");
 	}
-	
+
 }

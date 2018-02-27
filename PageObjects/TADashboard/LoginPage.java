@@ -1,17 +1,15 @@
 package TADashboard;
 
-import org.openqa.selenium.Alert;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import Constant.Constant;
 
 public class LoginPage extends MainPage {
-	private WebDriver _driverLoginPage;
-	private WebDriverWait _driverWaitLoginPage;
+	private WebDriver _driverLoginPage;	
 
 	private static final By _txtUsername = By.xpath("//input[@id='username']");
 	private static final By _txtPassword = By.xpath("//input[@id='password']");
@@ -53,5 +51,5 @@ public class LoginPage extends MainPage {
 		getBtnLogin().click();
 		return new MainPage(_driverLoginPage);
 	}
-	
+
 }

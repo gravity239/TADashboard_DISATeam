@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 import Common.Utilities;
 import TADashboard.LoginPage;
 import TADashboard.MainPage;
-import TADashboard.GeneralPage;
 import TestBase.TestBase;
 import Constant.Constant;
 import DataObject.TAPage;
@@ -33,12 +32,9 @@ public class TC_MainPage extends TestBase {
 				MainPage mainPage = new MainPage(driver);
 				mainPage.deletePage(pageName);
 				page = null;
-
 			}
 		}
-
 		driver.quit();
-
 	}
 
 	@Test
@@ -230,10 +226,9 @@ public class TC_MainPage extends TestBase {
 		// delete parent page and verify displayed message.
 		mainPage.gotoPage(pageName);
 		mainPage.selectGeneralSetting("Delete");
-		softAssert.assertEquals(mainPage.getAlertMessage(), "Are you sure you want to delete this page?");
+		softAssert.assertEquals(mainPage.getAlertMessage(), Constant.deletePageConfirmation);
 		mainPage.acceptAlertIfAvailable(Constant.TimeOut);
-		softAssert.assertEquals(mainPage.getAlertMessage(),
-				"Can not delete page '" + pageName + "' since it has children page(s)");
+		softAssert.assertEquals(mainPage.getAlertMessage(), String.format(Constant.unableDeletePage, pageName));
 		mainPage.acceptAlertIfAvailable(Constant.TimeOut);
 
 		// delete childpage and verify displayed message.

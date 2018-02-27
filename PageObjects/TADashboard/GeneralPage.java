@@ -60,28 +60,25 @@ public class GeneralPage {
 			element.click();
 		}
 	}
-	
-	public void selectComboboxValue(Select sElement, String value)
-    {
-  	  if ((value!= null) && (value!=""))
-  	  {  		  
-  		sElement.selectByVisibleText(value);
-  	  }    	 
-    }
+
+	public void selectComboboxValue(Select sElement, String value) {
+		if ((value != null) && (value != "")) {
+			sElement.selectByVisibleText(value.toString());
+		}
+	}
 
 	public void waitForAlertPresent(WebDriverWait wait, WebDriver driver, long timeOut) {
 		wait = new WebDriverWait(driver, timeOut);
+		wait.until(ExpectedConditions.alertIsPresent());
 	}
-	
-	public void enterValue(WebElement element, String value)
-    {
-  	  if (value!= null)
-  	  {
-  		  element.clear();
-  		  element.sendKeys(value);
-  	  }
-  	      	  
-    }
+
+	public void enterValue(WebElement element, String value) {
+		if (value != null) {
+			element.clear();
+			element.sendKeys(value);
+		}
+
+	}
 
 	public void waitForElementToBeClickable(WebDriverWait wait, WebDriver driver, WebElement ele, long timeOut) {
 		wait = new WebDriverWait(driver, Constant.TimeOut);
@@ -95,19 +92,18 @@ public class GeneralPage {
 
 	public void acceptAlertIfAvailable(long timeout) {
 		long waitForAlert = System.currentTimeMillis() + timeout;
-		boolean boolFound = false;
+		boolean found = false;
 		do {
 			try {
 				Alert alert = this._driverGeneralPage.switchTo().alert();
 				if (alert != null) {
 					alert.accept();
-					boolFound = true;
+					found = true;
 				}
 			} catch (UnhandledAlertException ex) {
 			}
-		} while ((System.currentTimeMillis() < waitForAlert) && (!boolFound));
-		
-		}
+		} while ((System.currentTimeMillis() < waitForAlert) && (!found));
+	}
 
 	// Override FindElement
 	public WebElement myFindElement(By by, long timeout) {
@@ -153,35 +149,88 @@ public class GeneralPage {
 	public boolean isElementExisted(By locatorKey) {
 		WebDriverWait wait = new WebDriverWait(_driverGeneralPage, Constant.ShortTime);
 		try {
-			wait.until(ExpectedConditions.visibilityOfElementLocated(locatorKey));	
-			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(locatorKey));
+
 		} catch (Exception e) {
 			return false;
 		}
 		return true;
 	}
-	
-	  //Determine if a item that in a item list exists
-	  public boolean isItemExisted(WebElement element, String item)
-      {
-          Select selector = new Select(element);
-          List<WebElement> elements=selector.getOptions();
-          boolean found=false;
-          for(WebElement ele:elements)
-          {
-              if(item.equals(ele.getText()))
-              {
-                  found=true;
-                  break;
-              }
-          }
-          return found;
-      }	  
-	  
-	  public String getAlertMessage() {
-			this.waitForAlertPresent(_driverWaitGeneralPage, _driverGeneralPage, Constant.TimeOut);
-			Alert alert = _driverGeneralPage.switchTo().alert();
-			return alert.getText();
+
+	// Determine if a item that in a item list exists
+	public boolean isItemExisted(Select element, String item) {
+		List<WebElement> elements = element.getOptions();
+		boolean found = false;
+		for (WebElement ele : elements) {
+			if (item.equals(ele.getText())) {
+				found = true;
+				break;
+			}
 		}
-	  
+		return found;
+	}
+
+	public String getTableCellValue(String tableXpath, int row_number, int column_number) {
+		String cellValue = "";
+		String xpathString = tableXpath + "/tr[%d]/td[%d]";
+		WebElement colElement = myFindElement(By.xpath(String.format(xpathString, row_number, column_number)),
+				Constant.ShortTime);
+		if (colElement != null) {
+			cellValue = colElement.getText();
+		}
+
+		return cellValue;
+	}
+	
+	public int getTableRowCount(String tableXpath) {
+		String xpathString = tableXpath + "/tr";
+		List<WebElement> listOfRows = _driverGeneralPage.findElements(By.xpath(xpathString));
+		return listOfRows.size();
+	}
+	
+	public int getTableColumnCountByRow(String tableXpath,int row_number) {
+		String xpathString = tableXpath + "/tr[%d]/td";
+		List<WebElement> listOfColumns = _driverGeneralPage.findElements(By.xpath(String.format(xpathString,row_number)));
+		return listOfColumns.size();
+	}
+
+	public String getAlertMessage() {
+		this.waitForAlertPresent(_driverWaitGeneralPage, _driverGeneralPage, Constant.TimeOut);
+		Alert alert = _driverGeneralPage.switchTo().alert();
+		return alert.getText();
+	}
+
+	public int getItemIndexInCombobox(Select element, String value) {
+		List<WebElement> elements = element.getOptions();
+		int found = -1;
+		for (WebElement ele : elements) {
+			if (value.equals(ele.getText())) {
+				found = elements.indexOf(ele);
+				break;
+			}
+		}
+		return found;
+	}
+
+	public boolean areAllCheckBoxesUnChecked() {
+		List<WebElement> checkBoxs = _driverGeneralPage.findElements(By.xpath("//input[@class = 'box']"));
+
+		for (WebElement ele : checkBoxs) {
+			if (ele.isSelected()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean areAllCheckBoxesChecked() {
+		List<WebElement> checkBoxs = _driverGeneralPage.findElements(By.xpath("//input[@class = 'box']"));
+
+		for (WebElement ele : checkBoxs) {
+			if (ele.isSelected() == false) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
