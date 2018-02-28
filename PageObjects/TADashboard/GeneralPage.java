@@ -238,18 +238,18 @@ public class GeneralPage {
 	  public boolean isItemPresentInCombobox(String comboboxName, String comboboxItem,String attribute)
       {
           boolean isItemPresent = false;
-          for (WebElement item : _driverGeneralPage.findElements(By.xpath(String.format("//td[contains(text(), %s)]/following-sibling::*/descendant::select" + "/descendant::*",comboboxName))))
+          for (WebElement item : _driverGeneralPage.findElements(By.xpath(String.format("//td[contains(text(), '%s')]/following-sibling::*/descendant::select" + "/descendant::*",comboboxName))))
           {
               if (attribute == "value")
               {
-                  if (item.getAttribute("value") == comboboxItem)
+                  if (item.getAttribute("value").equals(comboboxItem))
                   {
                       isItemPresent = true;
                   }
               }
               else if(attribute == "text")
               {
-                  if (item.getText().trim() == comboboxItem)
+                  if (item.getText().trim().equals(comboboxItem))
                   {
                       isItemPresent = true;
                   }

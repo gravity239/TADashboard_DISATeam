@@ -12,10 +12,11 @@ public class TestBase {
 
 	String driverPath = "./Executables/chromedriver.exe";
 	public WebDriver driver;
-	protected SoftAssert softAssert = new SoftAssert();
+	protected SoftAssert softAssert; 
 
 	@BeforeMethod
 	public void beforeMethod_initialize() {
+		softAssert = new SoftAssert();
 		if (driver.toString().contains("null")) {
 			System.setProperty("webdriver.chrome.driver", driverPath);
 			driver = new ChromeDriver();

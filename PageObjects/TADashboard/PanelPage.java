@@ -328,7 +328,7 @@ public class PanelPage extends MainPage {
 	public boolean isPanelSortedCorrectly(String panelType) {
 		int rowCount = getTableRowCount(String.format(_tblPanel, panelType));
 		int startRow = 1;
-		for (int startColumn = 1; startColumn + 1 <= getTableColumnCountByRow(String.format(_tblPanel, panelType),
+		for (int startColumn = 1; startColumn  <= getTableColumnCountByRow(String.format(_tblPanel, panelType),
 				startRow); startColumn++) {
 			String cellValue = getTableCellValue(String.format(_tblPanel, panelType), startRow, startColumn);
 			String cellValueAfter = getTableCellValue(String.format(_tblPanel, panelType), startRow, startColumn + 1);
