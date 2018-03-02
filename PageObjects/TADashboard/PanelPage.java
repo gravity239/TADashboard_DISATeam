@@ -57,12 +57,12 @@ public class PanelPage extends MainPage {
 	private static final String _panelTypeInEditDialog = "//table[@id='infoSettings']//td[.='Type']/following-sibling::td/label[@class='panel_setting_paneltype']";
 	private static final String _panelTypeToSelect = "//label[contains(.,'{0}')]/input[contains(@id,'radPanelType')]";
 	private static final By _btnCancel = By
-			.xpath("//div[@class='ui-dialog editpanelDlg' and contains(@style,'display: block')]//input[@id='Cancel']");
+			.xpath("//div[contains(@class,'ui-dialog editpanelDlg') and contains(@style,'display: block')]//input[@id='Cancel']");
 	private static final By _cmbSelectpage = By.xpath("//select[@id='cbbPages']");
 	private static final By _txtHeight = By.xpath("//input[@id='txtHeight']");
 	private static final By _txtFolder = By.xpath("//input[@id='txtFolder']");
 	private static final By _btnOk = By
-			.xpath("//div[@class='ui-dialog editpanelDlg' and contains(@style,'display: block')]//input[@id='OK']");
+			.xpath("//div[contains(@class,'ui-dialog editpanelDlg') and contains(@style,'display: block')]//input[@id='OK']");
 	private static final By _btnSelectFolder = By.xpath("//a[contains(@href,'treeFolder')]");
 	private static final String _lnkPanelByTypeAndName = "//div[.='%s']/following-sibling::table/tbody/tr/td/ul/li/a[.='%s']";
 	private static final String _tblPanel = "//div[.='%s']/following-sibling::table/tbody/";
@@ -79,7 +79,7 @@ public class PanelPage extends MainPage {
 		return myFindElement(_rbChart, Constant.TimeOut);
 	}
 
-	public WebElement RbIndicator() {
+	public WebElement getRbIndicator() {
 		return myFindElement(_rbIndicator, Constant.TimeOut);
 	}
 
@@ -328,7 +328,7 @@ public class PanelPage extends MainPage {
 	public boolean isPanelSortedCorrectly(String panelType) {
 		int rowCount = getTableRowCount(String.format(_tblPanel, panelType));
 		int startRow = 1;
-		for (int startColumn = 1; startColumn + 1 <= getTableColumnCountByRow(String.format(_tblPanel, panelType),
+		for (int startColumn = 1; startColumn  <= getTableColumnCountByRow(String.format(_tblPanel, panelType),
 				startRow); startColumn++) {
 			String cellValue = getTableCellValue(String.format(_tblPanel, panelType), startRow, startColumn);
 			String cellValueAfter = getTableCellValue(String.format(_tblPanel, panelType), startRow, startColumn + 1);
