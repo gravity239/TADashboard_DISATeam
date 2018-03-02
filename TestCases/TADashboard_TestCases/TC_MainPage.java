@@ -9,31 +9,20 @@ import TADashboard.MainPage;
 import TestBase.TestBase;
 import Constant.Constant;
 import DataObject.TAPage;
+import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
 
 public class TC_MainPage extends TestBase {
 
-	public TAPage page;
-	public TAPage pageChild;
+	public ArrayList<String> pages = new ArrayList<String>();
 
 	@AfterMethod
 	public void afterMethod_cleanup() {
-		if (pageChild != null) {
-
+		for (int i = 0; i < pages.size(); i++) {
 			MainPage mainPage = new MainPage(driver);
-			mainPage.deletePage(page.getPageName() + "->" + pageChild.getPageName());
-			pageChild = null;
-
+			mainPage.deletePage(pages.get(i));
 		}
-		if (page != null) {
-			String pageName = page.getPageName();
-			if (pageName.equals("Overview")) {
-				page = null;
-			} else {
-				MainPage mainPage = new MainPage(driver);
-				mainPage.deletePage(pageName);
-				page = null;
-			}
-		}
+		pages.clear();
 		driver.quit();
 	}
 
@@ -58,7 +47,7 @@ public class TC_MainPage extends TestBase {
 
 		// Post-condition: Delete newly added page
 
-		mainPage.deletePage(pageName);
+		pages.add(pageName);
 		softAssert.assertAll();
 	}
 
@@ -81,7 +70,7 @@ public class TC_MainPage extends TestBase {
 		// Post-condition: Delete newly added page
 		mainPage.logout();
 		loginPage.login(Constant.Username, Constant.Password, Constant.DefaultRepo);
-		mainPage.deletePage(pageName);
+		pages.add(pageName);
 		softAssert.assertAll();
 
 	}
@@ -96,7 +85,7 @@ public class TC_MainPage extends TestBase {
 
 		LoginPage loginPage = new LoginPage(driver);
 		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
-		page = new TAPage(pageName);
+		TAPage page = new TAPage(pageName);
 		mainPage.addNewPage(page);
 
 		// VP check add page successfully
@@ -104,11 +93,14 @@ public class TC_MainPage extends TestBase {
 
 		// Add another page after the first page
 		String pageName2 = Utilities.uniquePageName("Page");
-		pageChild = new TAPage(pageName2, null, 0, pageName);
+		TAPage pageChild = new TAPage(pageName2, null, 0, pageName);
 		mainPage.addNewPage(pageChild);
 
 		// VP check that the second page displays beside the first page
 		softAssert.assertEquals(mainPage.isPageNextToPage(pageName, pageName2), true);
+		// Post Condition
+		pages.add(pageName + "->" + pageName2);
+		pages.add(pageName);
 
 	}
 
@@ -124,7 +116,7 @@ public class TC_MainPage extends TestBase {
 		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
 
 		// Add a public page
-		page = new TAPage(pageName, null, 0, null, true);
+		TAPage page = new TAPage(pageName, null, 0, null, true);
 		mainPage.addNewPage(page);
 
 		// VP check add page successfully
@@ -132,7 +124,7 @@ public class TC_MainPage extends TestBase {
 		// Add another page which is child of the first page.
 
 		String pageName2 = Utilities.uniquePageName("Page");
-		pageChild = new TAPage(pageName2, pageName, 0, null, false);
+		TAPage pageChild = new TAPage(pageName2, pageName, 0, null, false);
 		mainPage.addNewPage(pageChild);
 		// VP check that the second page displays
 		softAssert.assertEquals(mainPage.isPageExisted(pageName2), true);
@@ -144,6 +136,8 @@ public class TC_MainPage extends TestBase {
 		// Post condition.
 		loginPage.logout();
 		loginPage.login(Constant.Username, Constant.Password, Constant.DefaultRepo);
+		pages.add(pageName + "->" + pageName2);
+		pages.add(pageName);
 
 	}
 
@@ -158,7 +152,7 @@ public class TC_MainPage extends TestBase {
 		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
 
 		// Add a non-public page
-		page = new TAPage(pageName, null, 0, null, false);
+		TAPage page = new TAPage(pageName, null, 0, null, false);
 		mainPage.addNewPage(page);
 
 		// VP check add page successfully
@@ -194,6 +188,8 @@ public class TC_MainPage extends TestBase {
 		// Post condition.
 		loginPage.logout();
 		loginPage.login(Constant.Username, Constant.Password, Constant.DefaultRepo);
+		pages.add(pageName);
+		pages.add(pageName2);
 
 	}
 
@@ -251,4 +247,54 @@ public class TC_MainPage extends TestBase {
 		softAssert.assertEquals(mainPage._lnkDeletePage().isDisplayed(), false);
 	}
 
+	@Test
+	public void TC021_DA_MP() {
+		System.out.println("Verify user is able to add additional sibbling pages to the parent page successfully");
+		String pageName = Utilities.uniquePageName("Page");
+		// 1. Navigate to Dashboard login page. Login with valid account
+		// 2. Go to Global Setting -> Add page. Enter Page Name field
+
+		LoginPage loginPage = new LoginPage(driver);
+		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
+		TAPage page = new TAPage(pageName);
+		mainPage.addNewPage(page);
+
+		// VP check add page successfully
+		softAssert.assertEquals(mainPage.isPageExisted(pageName), true);
+
+		// Add another page which is child of the first page
+		String pageName2 = Utilities.uniquePageName("Page");
+		TAPage pageChild = new TAPage(pageName2, pageName, 0, null);
+		mainPage.addNewPage(pageChild);
+
+		// Add another page which is child of the first page
+		String pageName3 = Utilities.uniquePageName("Page");
+		TAPage pageChild2 = new TAPage(pageName3, pageName, 0, null);
+		mainPage.addNewPage(pageChild2);
+
+		// VP check that the third page added
+		softAssert.assertEquals(mainPage.isPageExisted(pageName3), true);
+		// Post Condition
+		pages.add(pageName + "->" + pageName2);
+		pages.add(pageName + "->" + pageName3);
+		pages.add(pageName);
+
+	}
+
+	@Test
+	public void TC022_DA_MP() {
+		System.out
+				.println("Verify user is able to add additional sibbling page levels to the parent page successfully.");
+		String pageName = Utilities.uniquePageName("Page");
+		// 1. Navigate to Dashboard login page. Login with valid account
+		// 2. Go to Global Setting -> Add page. Enter Page Name field
+		LoginPage loginPage = new LoginPage(driver);
+		MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
+		mainPage.addPage(pageName, "Overview", 0, "", true);
+		// VP Check Page added successfully
+		mainPage.isPageExisted(pageName);
+		pages.add(pageName);
+		softAssert.assertAll();
+
+	}
 }

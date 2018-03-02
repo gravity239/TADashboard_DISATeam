@@ -306,4 +306,7 @@ public class MainPage extends GeneralPage {
            }
            //this.waitForElementToBeVisible(_driverWaitMainPage, _driverMainPage, By.xpath("\"//div[@class='phead' AND .='Choose panels']/parent::div/parent::div[@style='display: none;']"), Constant.TimeOut);
        }
+       
+          
+       
 }
