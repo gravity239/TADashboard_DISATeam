@@ -295,6 +295,85 @@ public class TC_MainPage extends TestBase {
 		mainPage.isPageExisted(pageName);
 		pages.add(pageName);
 		softAssert.assertAll();
+		
+	}
+		@Test
+		public void TC023_DA_MP() {
+			System.out
+					.println("Verify user is able to delete sibbling page as long as that page has not children page under it");
+			String pageName = Utilities.uniquePageName("Page");
+			// 1. Navigate to Dashboard login page. Login with valid account
+			// 2. Go to Global Setting -> Add page. Enter Page Name field
+
+			LoginPage loginPage = new LoginPage(driver);
+			MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
+			TAPage page = new TAPage(pageName);
+			mainPage.addNewPage(page);
+
+			// VP check add page successfully
+			softAssert.assertEquals(mainPage.isPageExisted(pageName), true);
+
+			// Add another page which is child of the first page
+			String pageName2 = Utilities.uniquePageName("Page");
+			TAPage pageChild = new TAPage(pageName2, pageName, 0, null);
+			mainPage.addNewPage(pageChild);
+			
+			//delete parent page.
+			mainPage.gotoPage(pageName);
+			mainPage.selectGeneralSetting("Delete");
+			softAssert.assertEquals(mainPage.getAlertMessage(), Constant.deletePageConfirmation);
+			mainPage.acceptAlertIfAvailable(Constant.TimeOut);
+			softAssert.assertEquals(mainPage.getAlertMessage(), String.format(Constant.unableDeletePage, pageName));
+			mainPage.acceptAlertIfAvailable(Constant.TimeOut);
+			// delete child page
+			mainPage.deletePage(pageName + "->" + pageName2);
+			
+			
+			
 
 	}
+		
+		@Test
+		public void TC024_DA_MP() {
+			System.out
+					.println("Verify user is able to edit the name of the page (Parent/Sibbling) successfully");
+			String pageName = Utilities.uniquePageName("Page");
+			// 1. Navigate to Dashboard login page. Login with valid account
+			// 2. Go to Global Setting -> Add page. Enter Page Name field
+
+			LoginPage loginPage = new LoginPage(driver);
+			MainPage mainPage = loginPage.open().login(Constant.Username, Constant.Password, Constant.DefaultRepo);
+			TAPage page = new TAPage(pageName);
+			mainPage.addNewPage(page);
+
+			// VP check add page successfully
+			softAssert.assertEquals(mainPage.isPageExisted(pageName), true);
+
+			// Add another page which is child of the first page
+			String pageName2 = Utilities.uniquePageName("Page");
+			TAPage pageChild = new TAPage(pageName2, pageName, 0, null);
+			mainPage.addNewPage(pageChild);
+			
+			//edit parent name
+			page.setPageName(pageName+"temp");
+			mainPage.editPage(pageName, page);
+			softAssert.assertEquals(mainPage.isPageExisted(page.getPageName()), true);
+			
+			//edit child page
+			pageChild.setPageName(pageName2+"temp");
+			pageChild.setPageParent(page.getPageName());
+			mainPage.editPage(page.getPageName()+"->"+pageName2,pageChild);
+			System.out.println (mainPage.isPageExisted(page.getPageName()+"->"+pageChild.getPageName()));
+			softAssert.assertEquals(mainPage.isPageExisted(page.getPageName()+"->"+pageChild.getPageName()), true);
+					
+			//Post Condition
+			
+			pages.add(page.getPageName()+"->"+pageChild.getPageName());
+			pages.add(page.getPageName());
+			softAssert.assertAll();
+	}
+		
+		
+		
+		
 }
